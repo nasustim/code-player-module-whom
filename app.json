@@ -1,0 +1,9 @@
+{
+  "name": "codeplayer",
+  "displayName": "codeplayer",
+  "platforms": ["ios"],
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "com.nasustim.codeplayer"
+  }
+}
