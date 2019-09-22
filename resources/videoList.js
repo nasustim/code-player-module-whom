@@ -8,6 +8,6 @@ const videoList = [
   './keiei_watashi.mp4',
   './team_team.mp4',
   './team_watashi.mp4',
-]
+];
 
-export default videoList
+export default videoList;
