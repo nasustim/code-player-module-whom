@@ -6,29 +6,28 @@
  * @flow
  */
 
-import React, {Component} from 'react'
-import {StyleSheet, View} from 'react-native'
-import Video from 'react-native-video'
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Video from 'react-native-video';
 
-import {meVideoList} from '../resources/videoList'
+import {meVideoList} from '../resources/videoList';
 
 export default class Wipe extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isPaused: this.props.isPaused,
       currentTime: this.props.currentTime,
       movieId: this.props.movieId,
-    }
+    };
   }
   componentDidMount() {
-    this.player.seek(this.state.currentTime)
+    this.player.seek(this.state.currentTime);
   }
   render() {
-    const {movieId, isPaused} = this.state
+    const {movieId, isPaused} = this.state;
     return (
-      <View
-        style={styles.container}>
+      <View style={styles.container}>
         <Video
           style={styles.video}
           source={{uri: meVideoList[parseInt(movieId)]}}
@@ -37,12 +36,11 @@ export default class Wipe extends Component {
           }}
           volume={0}
           paused={isPaused}
-          />
+        />
       </View>
-    )
+    );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -52,9 +50,7 @@ const styles = StyleSheet.create({
 
     right: 20,
 
-
-    position: "absolute"
-
+    position: 'absolute',
   },
   video: {
     position: 'absolute',
@@ -62,5 +58,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-  }
-})
+  },
+});

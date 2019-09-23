@@ -22,7 +22,7 @@ import Video from 'react-native-video';
 import {codeVideoList} from './resources/videoList';
 import experiences from './resources/experiences';
 
-import Wipe from './components/Wipe'
+import Wipe from './components/Wipe';
 
 export default class App extends Component {
   ws;
@@ -100,7 +100,7 @@ export default class App extends Component {
       }
     };
     this.ws.onerror = err => {
-      this.ws = null
+      this.ws = null;
     };
     this.ws.onclose = event => {
       console.log(
@@ -147,47 +147,41 @@ export default class App extends Component {
       </View>
     ) : movieId !== '9' ? (
       <View style={styles.Container}>
-          <Video
-            fullscreen={true}
-            style={styles.video}
-            source={{uri: codeVideoList[parseInt(movieId)]}}
-            ref={ref => {
-              this.player = ref;
-            }}
-            onBuffer={this.onBuffer}
-            paused={isPaused}
-            onProgress={movie => {
-              if (Math.floor(movie.currentTime) !== currentTime) {
-                this.setState({
-                  currentTime: Math.floor(movie.currentTime),
-                });
+        <Video
+          fullscreen={true}
+          style={styles.video}
+          source={{uri: codeVideoList[parseInt(movieId)]}}
+          ref={ref => {
+            this.player = ref;
+          }}
+          onBuffer={this.onBuffer}
+          paused={isPaused}
+          onProgress={movie => {
+            if (Math.floor(movie.currentTime) !== currentTime) {
+              this.setState({
+                currentTime: Math.floor(movie.currentTime),
+              });
 
-                if (Math.floor(movie.currentTime) === stopTime) {
-                  this.sendMessage({
-                    signal: 1,
-                    movieId: movieId,
-                  });
-                  this.setState({
-                    isPaused: true,
-                  });
-                } else if (Math.floor(movie.currentTime) === markerTime) {
-                  this.sendMessage({
-                    signal: 2,
-                    movieId: movieId,
-                  });
-                }
+              if (Math.floor(movie.currentTime) === stopTime) {
+                this.sendMessage({
+                  signal: 1,
+                  movieId: movieId,
+                });
+                this.setState({
+                  isPaused: true,
+                });
+              } else if (Math.floor(movie.currentTime) === markerTime) {
+                this.sendMessage({
+                  signal: 2,
+                  movieId: movieId,
+                });
               }
-            }}
-          />
-          {
-            isPaused === false 
-              ? (<Wipe
-                  isPaused={false}
-                  currentTime={currentTime}
-                  movieId={movieId}
-                />)
-              : null
-          }
+            }
+          }}
+        />
+        {isPaused === false ? (
+          <Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
+        ) : null}
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>

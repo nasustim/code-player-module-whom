@@ -20,4 +20,3 @@ export const meVideoList = [
   './m_team_team.mp4',
   './m_team_watashi.mp4',
 ];
-
