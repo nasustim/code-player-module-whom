@@ -19,8 +19,10 @@ import {
 
 import Video from 'react-native-video';
 
-import videoList from './resources/videoList';
+import {codeVideoList} from './resources/videoList';
 import experiences from './resources/experiences';
+
+import Wipe from './components/Wipe'
 
 export default class App extends Component {
   ws;
@@ -98,7 +100,7 @@ export default class App extends Component {
       }
     };
     this.ws.onerror = err => {
-      Alert.alert('ERROR', 'Websocketサーバに接続できません。');
+      this.ws = null
     };
     this.ws.onclose = event => {
       console.log(
@@ -144,12 +146,11 @@ export default class App extends Component {
         </View>
       </View>
     ) : movieId !== '9' ? (
-      <View style={styles.container}>
-        <Fragment>
+      <View style={styles.Container}>
           <Video
             fullscreen={true}
             style={styles.video}
-            source={{uri: videoList[parseInt(movieId)]}}
+            source={{uri: codeVideoList[parseInt(movieId)]}}
             ref={ref => {
               this.player = ref;
             }}
@@ -174,19 +175,19 @@ export default class App extends Component {
                     signal: 2,
                     movieId: movieId,
                   });
-                  this.setState({
-                    isSteppable: false,
-                  });
-                  const a = setTimeout(() => {
-                    this.setState({
-                      isSteppable: true,
-                    });
-                  }, 1000);
                 }
               }
             }}
           />
-        </Fragment>
+          {
+            isPaused === false 
+              ? (<Wipe
+                  isPaused={false}
+                  currentTime={currentTime}
+                  movieId={movieId}
+                />)
+              : null
+          }
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#AAAAAA',
   },
   expContainer: {
     padding: 20,
@@ -231,12 +232,31 @@ const styles = StyleSheet.create({
     margin: 10,
     color: 'black',
   },
-  video: {
+  videoContainer: {
     position: 'absolute',
+    backgroundColor: '#F5FCFF',
+  },
+  video: {
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
+    width: 768,
+    height: 1024,
+
+    zIndex: 1,
+    position: 'absolute',
+  },
+  miniVideo: {
+    width: 150,
+
+    height: 50,
+
+    bottom: 15,
+    right: 15,
+    zIndex: 2,
+
+    position: 'absolute',
   },
   experiences: {
     textAlign: 'left',
