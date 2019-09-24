@@ -24,6 +24,8 @@ import experiences from './resources/experiences';
 
 import Wipe from './components/Wipe';
 
+import {codeSize} from './resources/sizes'
+
 export default class App extends Component {
   ws;
   constructor(props) {
@@ -147,38 +149,40 @@ export default class App extends Component {
       </View>
     ) : movieId !== '9' ? (
       <View style={styles.Container}>
-        <Video
-          fullscreen={true}
-          style={styles.video}
-          source={{uri: codeVideoList[parseInt(movieId)]}}
-          ref={ref => {
-            this.player = ref;
-          }}
-          onBuffer={this.onBuffer}
-          paused={isPaused}
-          onProgress={movie => {
-            if (Math.floor(movie.currentTime) !== currentTime) {
-              this.setState({
-                currentTime: Math.floor(movie.currentTime),
-              });
-
-              if (Math.floor(movie.currentTime) === stopTime) {
-                this.sendMessage({
-                  signal: 1,
-                  movieId: movieId,
-                });
+        <View style={styles.videoContainer}>
+          <Video
+            fullscreen={true}
+            style={styles.video}
+            source={{uri: codeVideoList[parseInt(movieId)]}}
+            ref={ref => {
+              this.player = ref;
+            }}
+            onBuffer={this.onBuffer}
+            paused={isPaused}
+            onProgress={movie => {
+              if (Math.floor(movie.currentTime) !== currentTime) {
                 this.setState({
-                  isPaused: true,
+                  currentTime: Math.floor(movie.currentTime),
                 });
-              } else if (Math.floor(movie.currentTime) === markerTime) {
-                this.sendMessage({
-                  signal: 2,
-                  movieId: movieId,
-                });
+
+                if (Math.floor(movie.currentTime) === stopTime) {
+                  this.sendMessage({
+                    signal: 1,
+                    movieId: movieId,
+                  });
+                  this.setState({
+                    isPaused: true,
+                  });
+                } else if (Math.floor(movie.currentTime) === markerTime) {
+                  this.sendMessage({
+                    signal: 2,
+                    movieId: movieId,
+                  });
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        </View>
         {isPaused === false ? (
           <Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
         ) : null}
@@ -214,8 +218,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     backgroundColor: '#AAAAAA',
   },
   expContainer: {
@@ -228,29 +232,15 @@ const styles = StyleSheet.create({
   },
   videoContainer: {
     position: 'absolute',
-    backgroundColor: '#F5FCFF',
-  },
-  video: {
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    width: 768,
-    height: 1024,
-
     zIndex: 1,
-    position: 'absolute',
   },
-  miniVideo: {
-    width: 150,
-
-    height: 50,
-
-    bottom: 15,
-    right: 15,
-    zIndex: 2,
-
-    position: 'absolute',
+  video: {
+    width: codeSize.width,
+    height: codeSize.height,
   },
   experiences: {
     textAlign: 'left',
