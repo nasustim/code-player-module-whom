@@ -184,7 +184,7 @@ export default class App extends Component {
           />
         </View>
         {isPaused === false ? (
-          <Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
+          null//<Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
         ) : null}
       </View>
     ) : (
