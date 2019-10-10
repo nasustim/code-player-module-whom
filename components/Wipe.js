@@ -12,7 +12,7 @@ import Video from 'react-native-video';
 
 import {meVideoList} from '../resources/videoList';
 
-import {meSize, meRatio, codeSize} from '../resources/sizes'
+//import {meSize, meRatio, codeSize} from '../resources/sizes'
 
 export default class Wipe extends Component {
   constructor(props) {
@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
   container: {
     zIndex: 2,
     right: 20,
-    top: codeSize.height -  Math.floor(meSize.height * meRatio) - 20, // 何故かbottom:20が効かない
+    top: 0, //codeSize.height -  Math.floor(meSize.height * meRatio) - 20, // 何故かbottom:20が効かない
     position: 'absolute',
   },
   video: {
-    width: Math.floor(meSize.width * meRatio),
-    height: Math.floor(meSize.height * meRatio),
+    width: 100,//Math.floor(meSize.width * meRatio),
+    height: 20//Math.floor(meSize.height * meRatio),
   },
 });

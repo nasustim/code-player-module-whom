@@ -26,6 +26,8 @@
 		095D9D47234F550B00111254 /* team_team_code.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 095D9D36234F550B00111254 /* team_team_code.mp4 */; };
 		095D9D48234F550B00111254 /* keiei_watashi_code.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 095D9D37234F550B00111254 /* keiei_watashi_code.mp4 */; };
 		095D9D49234F550B00111254 /* keiei_watashi_code.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 095D9D37234F550B00111254 /* keiei_watashi_code.mp4 */; };
+		09B3535C234F66BE00766BDC /* enginner_me.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 09B3535B234F66BE00766BDC /* enginner_me.mp4 */; };
+		09B3535D234F66BE00766BDC /* enginner_me.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 09B3535B234F66BE00766BDC /* enginner_me.mp4 */; };
 		0E58B3259F498ECD77FF42BD /* libPods-codeplayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89BD6915ED5D5D272D41E4DB /* libPods-codeplayer.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
@@ -71,6 +73,7 @@
 		095D9D35234F550B00111254 /* kokoro_watashi_code.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = kokoro_watashi_code.mp4; sourceTree = "<group>"; };
 		095D9D36234F550B00111254 /* team_team_code.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = team_team_code.mp4; sourceTree = "<group>"; };
 		095D9D37234F550B00111254 /* keiei_watashi_code.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = keiei_watashi_code.mp4; sourceTree = "<group>"; };
+		09B3535B234F66BE00766BDC /* enginner_me.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = enginner_me.mp4; sourceTree = "<group>"; };
 		111EA2F654739676BA446C46 /* Pods-codeplayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-codeplayerTests.debug.xcconfig"; path = "Target Support Files/Pods-codeplayerTests/Pods-codeplayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1157360E9A16BDD0627E74B6 /* Pods-codeplayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-codeplayerTests.release.xcconfig"; path = "Target Support Files/Pods-codeplayerTests/Pods-codeplayerTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* codeplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = codeplayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +213,7 @@
 				095D9D32234F550B00111254 /* seitou_watashi_code.mp4 */,
 				095D9D36234F550B00111254 /* team_team_code.mp4 */,
 				095D9D34234F550B00111254 /* team_watashi_code.mp4 */,
+				09B3535B234F66BE00766BDC /* enginner_me.mp4 */,
 				13B07FAE1A68108700A75B9A /* codeplayer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* codeplayerTests */,
@@ -379,6 +383,7 @@
 				095D9D3D234F550B00111254 /* keiei_keiei_code.mp4 in Resources */,
 				095D9D43234F550B00111254 /* team_watashi_code.mp4 in Resources */,
 				095D9D49234F550B00111254 /* keiei_watashi_code.mp4 in Resources */,
+				09B3535D234F66BE00766BDC /* enginner_me.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +396,7 @@
 				095D9D46234F550B00111254 /* team_team_code.mp4 in Resources */,
 				095D9D3E234F550B00111254 /* seitou_watashi_code.mp4 in Resources */,
 				095D9D3C234F550B00111254 /* keiei_keiei_code.mp4 in Resources */,
+				09B3535C234F66BE00766BDC /* enginner_me.mp4 in Resources */,
 				095D9D38234F550B00111254 /* seitou_seitou_code.mp4 in Resources */,
 				095D9D44234F550B00111254 /* kokoro_watashi_code.mp4 in Resources */,
 				095D9D42234F550B00111254 /* team_watashi_code.mp4 in Resources */,

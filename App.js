@@ -6,6 +6,8 @@
  * @flow
  */
 
+import setting from './setting'
+
 import React, {Component, Fragment} from 'react';
 import {
   StyleSheet,
@@ -19,12 +21,28 @@ import {
 
 import Video from 'react-native-video';
 
+/**
+ * Production
+ */
 import {codeVideoList} from './resources/videoList';
 import experiences from './resources/experiences';
+import {codeSize} from './resources/sizes';
+
+/**
+ * unitTest/coding
+ */
+//import {codeVideoList} from './deviceTest/unit/coding/videoList';
+//import experiences from './deviceTest/unit/coding/experiences';
+//import {codeSize} from './deviceTest/unit/coding/sizes';
+
+/**
+ * unitTest/filtering
+ */
+//import {codeVideoList} from './deviceTest/unit/filtering/videoList';
+//import experiences from './deviceTest/unit/filtering/experiences';
+//import {codeSize} from './deviceTest/unit/filtering/sizes';
 
 import Wipe from './components/Wipe';
-
-import {codeSize} from './resources/sizes'
 
 export default class App extends Component {
   ws;
@@ -34,12 +52,12 @@ export default class App extends Component {
     this.state = {
       addr: 'ws://192.168.8.10:3003', // initilal value for exhibit network
       isConnectionStarted: false,
-      isConnectionEstablished: false,
-      movieId: '',
+      isConnectionEstablished: setting.env !== 'production',
+      movieId: setting.env === 'production' ? '' : '0',
       stopTime: -1,
       markerTime: -1,
       currentTime: 0,
-      isPaused: true,
+      isPaused: setting.env === 'production',
       rule: '',
       isSteppable: true,
     };
@@ -183,9 +201,9 @@ export default class App extends Component {
             }}
           />
         </View>
-        {//isPaused === false ? (
-        //  null//<Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
-        /*) : null*/}
+        {isPaused === false ? (
+          <Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
+        ) : null}
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>
