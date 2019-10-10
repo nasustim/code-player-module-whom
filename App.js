@@ -32,7 +32,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      addr: 'ws://192.168.8.10:3001', // initilal value for exhibit network
+      addr: 'ws://192.168.8.10:3003', // initilal value for exhibit network
       isConnectionStarted: false,
       isConnectionEstablished: false,
       movieId: '',
@@ -183,9 +183,9 @@ export default class App extends Component {
             }}
           />
         </View>
-        {isPaused === false ? (
-          null//<Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
-        ) : null}
+        {//isPaused === false ? (
+        //  null//<Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
+        /*) : null*/}
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>
@@ -198,9 +198,20 @@ export default class App extends Component {
                   return true;
                 }
                 for (let i in rule) {
-                  if (e[i].includes(rule[i])) {
-                  } else {
-                    return false;
+                  if(!Array.isArray(rule[i])){
+                    if (e[i].includes(rule[i])) {
+                    } else {
+                      return false;
+                    }
+                  }else{
+                    let flag = false
+                    for(let j in rule[i]){
+                      if(rule[i][j].includes(e[i])) {
+                        flag = true
+                      }
+                    }
+                    if(flag === false)
+                      return false
                   }
                 }
                 return true;

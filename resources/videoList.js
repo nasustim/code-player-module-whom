@@ -1,22 +1,25 @@
 export const codeVideoList = [
-  './c_engineer.mp4',
-  './c_seitou_seitou.mp4',
-  './c_seitou_watashi.mp4',
-  './c_kokoro_kokoro.mp4',
-  './c_kokoro_watashi.mp4',
-  './c_keiei_keiei.mp4',
-  './c_keiei_watashi.mp4',
-  './c_team_team.mp4',
-  './c_team_watashi.mp4',
+  './engineer_code.mp4',
+  './seitou_seitou_code.mp4',
+  './seitou_watashi_code.mp4',
+  './kokoro_kokoro_code.mp4',
+  './kokoro_watashi_code.mp4',
+  './keiei_keiei_code.mp4',
+  './keiei_watashi_code.mp4',
+  './team_team_code.mp4',
+  './team_watashi_code.mp4',
 ];
+
+/*
 export const meVideoList = [
-  './m_engineer.mp4',
-  './m_seitou_seitou.mp4',
-  './m_seitou_watashi.mp4',
-  './m_kokoro_kokoro.mp4',
-  './m_kokoro_watashi.mp4',
-  './m_keiei_keiei.mp4',
-  './m_keiei_watashi.mp4',
-  './m_team_team.mp4',
-  './m_team_watashi.mp4',
+  './engineer_me.mp4',
+  './seitou_seitou_me.mp4',
+  './seitou_watashi_me.mp4',
+  './kokoro_kokoro_me.mp4',
+  './kokoro_watashi_me.mp4',
+  './keiei_keiei_me.mp4',
+  './keiei_watashi_me.mp4',
+  './team_team_me.mp4',
+  './team_watashi_me.mp4',
 ];
+*/
