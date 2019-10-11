@@ -13,4 +13,4 @@
 
     $ yarn install && cd ios && pod install
 
-    // import movie files to Xcode Project
+これをやった後にXcodeから映像ファイルを流し込む。
