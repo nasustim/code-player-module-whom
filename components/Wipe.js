@@ -12,7 +12,7 @@ import Video from 'react-native-video';
 
 import {meVideoList} from '../resources/videoList';
 
-//import {meSize, meRatio, codeSize} from '../resources/sizes'
+import {meSize, meRatio, codeSize} from '../resources/sizes'
 
 export default class Wipe extends Component {
   constructor(props) {
@@ -27,11 +27,13 @@ export default class Wipe extends Component {
     this.player.seek(this.state.currentTime);
   }
   render() {
+    console.log('wipe rend')
+    console.log(this.props)
     const {movieId, isPaused} = this.state;
     return (
-      <View style={styles.container}>
+      <View style={styles.container1}>
         <Video
-          style={styles.video}
+          style={styles.video1}
           source={{uri: meVideoList[parseInt(movieId)]}}
           ref={ref => {
             this.player = ref;
@@ -45,14 +47,14 @@ export default class Wipe extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    zIndex: 2,
-    right: 20,
-    top: 0, //codeSize.height -  Math.floor(meSize.height * meRatio) - 20, // 何故かbottom:20が効かない
-    position: 'absolute',
+  container1: {
+    position: "absolute",
+    zIndex: 5,
+    right: 50,//20,
+    top: codeSize.height -  Math.floor(meSize.height * meRatio) - 20, // 何故かbottom:20が効かない
   },
-  video: {
-    width: 100,//Math.floor(meSize.width * meRatio),
-    height: 20//Math.floor(meSize.height * meRatio),
+  video1: {
+    width: Math.floor(meSize.width * meRatio),
+    height: Math.floor(meSize.height * meRatio),
   },
 });

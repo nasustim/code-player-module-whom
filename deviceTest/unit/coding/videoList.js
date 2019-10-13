@@ -10,7 +10,6 @@ export const codeVideoList = [
   './team_watashi_code.mp4',
 ];
 
-/*
 export const meVideoList = [
   './engineer_me.mp4',
   './seitou_seitou_me.mp4',
@@ -22,4 +21,3 @@ export const meVideoList = [
   './team_team_me.mp4',
   './team_watashi_me.mp4',
 ];
-*/

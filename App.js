@@ -54,6 +54,7 @@ export default class App extends Component {
       isConnectionStarted: false,
       isConnectionEstablished: setting.env !== 'production',
       movieId: setting.env === 'production' ? '' : '0',
+      startTime: 0,
       stopTime: -1,
       markerTime: -1,
       currentTime: 0,
@@ -96,12 +97,14 @@ export default class App extends Component {
       if (data.signal == 0 && data.movieId == this.state.movieId) {
         this.setState({
           isPaused: false,
+          startTime: this.state.currentTime,
           stopTime: data.time,
           count: count,
         });
       } else if (data.signal == 1 && data.movieId == this.state.movieId) {
         this.setState({
           markerTime: data.time,
+          startTime: this.state.currentTime,
           isPaused: false,
           count: count,
         });
@@ -137,6 +140,7 @@ export default class App extends Component {
     const isEstablished = this.state.isConnectionEstablished;
     const stopTime = this.state.stopTime;
     const currentTime = this.state.currentTime;
+    const startTime = this.state.startTime;
     const isPaused = this.state.isPaused;
     const movieId = this.state.movieId;
     const rule = this.state.rule;
@@ -202,7 +206,7 @@ export default class App extends Component {
           />
         </View>
         {isPaused === false ? (
-          <Wipe isPaused={false} currentTime={currentTime} movieId={movieId} />
+          <Wipe isPaused={isPaused} currentTime={startTime} movieId={movieId} />
         ) : null}
       </View>
     ) : (
@@ -247,7 +251,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
+    //flexDirection: 'row',
+    //justifyContent: 'space-between',
     //alignItems: 'center',
     backgroundColor: '#AAAAAA',
   },
