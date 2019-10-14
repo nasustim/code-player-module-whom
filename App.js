@@ -24,16 +24,16 @@ import Video from 'react-native-video';
 /**
  * Production
  */
-//import {codeVideoList} from './resources/videoList';
-//import experiences from './resources/experiences';
-//import {codeSize} from './resources/sizes';
+import {codeVideoList} from './resources/videoList';
+import experiences from './resources/experiences';
+import {codeSize} from './resources/sizes';
 
 /**
  * unitTest/coding
  */
-import {codeVideoList} from './deviceTest/unit/coding/videoList';
-import experiences from './deviceTest/unit/coding/experiences';
-import {codeSize} from './deviceTest/unit/coding/sizes';
+//import {codeVideoList} from './deviceTest/unit/coding/videoList';
+//import experiences from './deviceTest/unit/coding/experiences';
+//import {codeSize} from './deviceTest/unit/coding/sizes';
 
 /**
  * unitTest/filtering
@@ -205,7 +205,7 @@ export default class App extends Component {
             }}
           />
         </View>
-        {isPaused === false ? (
+        {isPaused === false && setting.mode == 'separate' ? (
           <Wipe isPaused={isPaused} currentTime={startTime} movieId={movieId} />
         ) : null}
       </View>
