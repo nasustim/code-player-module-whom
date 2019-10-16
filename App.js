@@ -109,13 +109,19 @@ export default class App extends Component {
           count: count,
         });
       } else if (data.signal == 2) {
-        this.player.seek(0);
-        this.setState({
-          isPaused: true,
-          isSteppable: true,
-          stopTime: 980,
-          markerTime: -1,
-        });
+        if(this.state.movieId != '9'){
+          this.player.seek(0);
+          this.setState({
+            isPaused: true,
+            isSteppable: true,
+            stopTime: 980,
+            markerTime: -1,
+          });
+        }else{
+          this.setState({
+            rule: '*'
+          })
+        }
       } else if (data.signal == 3 && this.state.movieId == '9') {
         this.setState({
           rule: data.rule,
