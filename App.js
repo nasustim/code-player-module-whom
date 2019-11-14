@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 
 import Video from 'react-native-video';
-import ImagePicker from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-picker';
 
 /**
  * Production
@@ -47,7 +47,7 @@ import Wipe from './components/Wipe';
 
 const selectorOption = {
   mediaType: 'video',
-}
+};
 
 export default class App extends Component {
   ws;
@@ -83,6 +83,10 @@ export default class App extends Component {
     }
     if (!this.state.movieId.match(/^[0-9]$/)) {
       Alert.alert('NOTICE', 'Movie IDは0から9の間で入力してください。');
+      return;
+    }
+    if (this.state.movieId.match(/^[0-8]$/) && !this.state.codingVideo) {
+      Alert.alert('NOTICE', '映像ファイルを選択してください。');
       return;
     }
     this.ws = new WebSocket(this.state.addr);
@@ -151,23 +155,23 @@ export default class App extends Component {
     this.ws.send(JSON.stringify(obj));
   }
 
-  selectCodingVideo () {
-    ImagePicker.launchImageLibrary(selectorOption, (response) => {
-      if(typeof response.uri !== 'undefined') {
+  selectCodingVideo() {
+    ImagePicker.launchImageLibrary(selectorOption, response => {
+      if (typeof response.uri !== 'undefined') {
         this.setState({
-          codingVideo: response.uri
-        })
+          codingVideo: response.uri,
+        });
       }
-    })
+    });
   }
-  selectProgrammerVideo () {
-    ImagePicker.launchImageLibrary(selectorOption, (response) => {
-      if(typeof response.uri !== 'undefined') {
+  selectProgrammerVideo() {
+    ImagePicker.launchImageLibrary(selectorOption, response => {
+      if (typeof response.uri !== 'undefined') {
         this.setState({
-          programmerVideo: response.uri
-        })
+          programmerVideo: response.uri,
+        });
       }
-    })
+    });
   }
 
   render() {
@@ -179,8 +183,8 @@ export default class App extends Component {
     const movieId = this.state.movieId;
     const rule = this.state.rule;
     const markerTime = this.state.markerTime;
-    const programmerVideo = this.state.programmerVideo
-    const codingVideo = this.state.codingVideo
+    const programmerVideo = this.state.programmerVideo;
+    const codingVideo = this.state.codingVideo;
 
     return !isEstablished ? (
       <View style={styles.container}>
@@ -201,12 +205,14 @@ export default class App extends Component {
           />
           <View style={styles.row}>
             <Button
-              style={!!programmerVideo ? styles.selectedChild : styles.controlChild}
+              style={
+                programmerVideo ? styles.selectedChild : styles.controlChild
+              }
               title="プログラマ動画を選択"
               onPress={this.selectProgrammerVideo}
             />
             <Button
-              style={!!codingVideo ? styles.selectedChild : styles.controlChild}
+              style={codingVideo ? styles.selectedChild : styles.controlChild}
               title="コーディング動画を選択"
               onPress={this.selectCodingVideo}
             />
@@ -226,7 +232,7 @@ export default class App extends Component {
           <Video
             fullscreen={true}
             style={styles.video}
-            source={{uri: codeVideoList[parseInt(movieId)]}}
+            source={{uri: codingVideo}}
             ref={ref => {
               this.player = ref;
             }}
@@ -256,14 +262,14 @@ export default class App extends Component {
             }}
           />
         </View>
-        {null/*isPaused === false && setting.mode == 'separate' ? (
-          <Wipe isPaused={isPaused} currentTime={startTime} movieId={movieId} />
-        ) : null*/}
-        {
-          isPaused === true
-          ? <View style={styles.mask} />
-          : null
-        }
+        {isPaused === false && setting.mode == 'separate' ? (
+          <Wipe
+            isPaused={isPaused}
+            currentTime={startTime}
+            uri={programmerVideo}
+          />
+        ) : null}
+        {isPaused === true ? <View style={styles.mask} /> : null}
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>
@@ -318,7 +324,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     width: codeSize.width,
     height: codeSize.height,
-    position: "absolute",
+    position: 'absolute',
     zIndex: 200,
   },
   menu: {
@@ -331,7 +337,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   controlChild: {
     margin: 10,

@@ -10,8 +10,6 @@ import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
 
-import {meVideoList} from '../resources/videoList';
-
 import {meSize, meRatio, codeSize} from '../resources/sizes'
 
 export default class Wipe extends Component {
@@ -20,7 +18,7 @@ export default class Wipe extends Component {
     this.state = {
       isPaused: this.props.isPaused,
       currentTime: this.props.currentTime,
-      movieId: this.props.movieId,
+      uri: this.props.uri,
     };
   }
   componentDidMount() {
@@ -29,12 +27,12 @@ export default class Wipe extends Component {
   render() {
     console.log('wipe rend')
     console.log(this.props)
-    const {movieId, isPaused} = this.state;
+    const {uri, isPaused} = this.state;
     return (
       <View style={styles.container1}>
         <Video
           style={styles.video1}
-          source={{uri: meVideoList[parseInt(movieId)]}}
+          source={{uri: uri}}
           ref={ref => {
             this.player = ref;
           }}
