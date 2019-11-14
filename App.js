@@ -19,21 +19,21 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Video from 'react-native-video';
+import Video, {FilterType} from 'react-native-video';
 
 /**
  * Production
  */
-import {codeVideoList} from './resources/videoList';
-import experiences from './resources/experiences';
-import {codeSize} from './resources/sizes';
+//import {codeVideoList} from './resources/videoList';
+//import experiences from './resources/experiences';
+//import {codeSize} from './resources/sizes';
 
 /**
  * unitTest/coding
  */
-//import {codeVideoList} from './deviceTest/unit/coding/videoList';
-//import experiences from './deviceTest/unit/coding/experiences';
-//import {codeSize} from './deviceTest/unit/coding/sizes';
+import {codeVideoList} from './deviceTest/unit/coding/videoList';
+import experiences from './deviceTest/unit/coding/experiences';
+import {codeSize} from './deviceTest/unit/coding/sizes';
 
 /**
  * unitTest/filtering
@@ -61,6 +61,7 @@ export default class App extends Component {
       isPaused: setting.env === 'production',
       rule: '',
       isSteppable: true,
+      isMono: false
     };
     this.ws = null;
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
@@ -151,6 +152,14 @@ export default class App extends Component {
     const movieId = this.state.movieId;
     const rule = this.state.rule;
     const markerTime = this.state.markerTime;
+
+    const isMono = this.state.isMono
+    setInterval(() => {
+      this.setState({
+        isMono: !isMono
+      })
+    }, 3000)
+
     return !isEstablished ? (
       <View style={styles.container}>
         <View>
@@ -176,7 +185,7 @@ export default class App extends Component {
         </View>
       </View>
     ) : movieId !== '9' ? (
-      <View style={styles.Container}>
+      <View style={styles.container}>
         <View style={styles.videoContainer}>
           <Video
             fullscreen={true}
@@ -211,9 +220,14 @@ export default class App extends Component {
             }}
           />
         </View>
-        {isPaused === false && setting.mode == 'separate' ? (
+        {null/*isPaused === false && setting.mode == 'separate' ? (
           <Wipe isPaused={isPaused} currentTime={startTime} movieId={movieId} />
-        ) : null}
+        ) : null*/}
+        {
+          isMono === true
+          ? <View style={styles.mask} />
+          : null
+        }
       </View>
     ) : (
       <ScrollView style={styles.expContainer}>
@@ -262,6 +276,14 @@ const styles = StyleSheet.create({
     //justifyContent: 'space-between',
     //alignItems: 'center',
     backgroundColor: '#AAAAAA',
+  },
+  mask: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: codeSize.width,
+    height: codeSize.height,
+    position: "absolute",
+    zIndex: 200,
   },
   expContainer: {
     padding: 20,
