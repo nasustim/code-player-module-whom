@@ -6,7 +6,7 @@
  * @flow
  */
 
-import setting from './setting'
+import setting from './setting';
 
 import React, {Component, Fragment} from 'react';
 import {
@@ -109,7 +109,7 @@ export default class App extends Component {
           count: count,
         });
       } else if (data.signal == 2) {
-        if(this.state.movieId != '9'){
+        if (this.state.movieId != '9') {
           this.player.seek(0);
           this.setState({
             isPaused: true,
@@ -117,10 +117,10 @@ export default class App extends Component {
             stopTime: 980,
             markerTime: -1,
           });
-        }else{
+        } else {
           this.setState({
-            rule: '*'
-          })
+            rule: '*',
+          });
         }
       } else if (data.signal == 3 && this.state.movieId == '9') {
         this.setState({
@@ -226,20 +226,21 @@ export default class App extends Component {
                   return true;
                 }
                 for (let i in rule) {
-                  if(!Array.isArray(rule[i])){
+                  if (!Array.isArray(rule[i])) {
                     if (e[i].includes(rule[i])) {
                     } else {
                       return false;
                     }
-                  }else{
-                    let flag = false
-                    for(let j in rule[i]){
-                      if(rule[i][j].includes(e[i])) {
-                        flag = true
+                  } else {
+                    let flag = false;
+                    for (let j in rule[i]) {
+                      if (rule[i][j].includes(e[i])) {
+                        flag = true;
                       }
                     }
-                    if(flag === false)
-                      return false
+                    if (flag === false) {
+                      return false;
+                    }
                   }
                 }
                 return true;
