@@ -56,6 +56,8 @@ PODS:
     - React-cxxreact (= 0.60.5)
     - React-jsi (= 0.60.5)
   - React-jsinspector (0.60.5)
+  - react-native-image-picker (1.1.0):
+    - React
   - react-native-video (5.0.2):
     - React
     - react-native-video/Video (= 5.0.2)
@@ -97,6 +99,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -135,6 +138,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-video:
     :path: "../node_modules/react-native-video"
   React-RCTActionSheet:
@@ -172,6 +177,7 @@ SPEC CHECKSUMS:
   React-jsi: 4d8c9efb6312a9725b18d6fc818ffc103f60fec2
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
+  react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
   React-RCTAnimation: 359ba1b5690b1e87cc173558a78e82d35919333e
@@ -185,6 +191,6 @@ SPEC CHECKSUMS:
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 051544c2b4fade91436ce07b4bcb3520137045c9
+PODFILE CHECKSUM: e6df6218e1e1b2466db52b9761e780486e020d04
 
 COCOAPODS: 1.8.4

@@ -2,8 +2,8 @@
  * environment:
  *  'production' || 'unitTest/coding' || 'unitTest/filtering'
  */
-//const env = 'production';
-const env = 'unitTest/coding';
+const env = 'production';
+//const env = 'unitTest/coding';
 
 /**
  * mode:

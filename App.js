@@ -19,21 +19,22 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Video, {FilterType} from 'react-native-video';
+import Video from 'react-native-video';
+import ImagePicker from 'react-native-image-picker'
 
 /**
  * Production
  */
-//import {codeVideoList} from './resources/videoList';
-//import experiences from './resources/experiences';
-//import {codeSize} from './resources/sizes';
+import {codeVideoList} from './resources/videoList';
+import experiences from './resources/experiences';
+import {codeSize} from './resources/sizes';
 
 /**
  * unitTest/coding
  */
-import {codeVideoList} from './deviceTest/unit/coding/videoList';
-import experiences from './deviceTest/unit/coding/experiences';
-import {codeSize} from './deviceTest/unit/coding/sizes';
+//import {codeVideoList} from './deviceTest/unit/coding/videoList';
+//import experiences from './deviceTest/unit/coding/experiences';
+//import {codeSize} from './deviceTest/unit/coding/sizes';
 
 /**
  * unitTest/filtering
@@ -43,6 +44,10 @@ import {codeSize} from './deviceTest/unit/coding/sizes';
 //import {codeSize} from './deviceTest/unit/filtering/sizes';
 
 import Wipe from './components/Wipe';
+
+const selectorOption = {
+  mediaType: 'video',
+}
 
 export default class App extends Component {
   ws;
@@ -61,9 +66,13 @@ export default class App extends Component {
       isPaused: setting.env === 'production',
       rule: '',
       isSteppable: true,
+      programmerVideo: '',
+      codingVideo: '',
     };
     this.ws = null;
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
+    this.selectCodingVideo = this.selectCodingVideo.bind(this);
+    this.selectProgrammerVideo = this.selectProgrammerVideo.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
@@ -142,6 +151,25 @@ export default class App extends Component {
     this.ws.send(JSON.stringify(obj));
   }
 
+  selectCodingVideo () {
+    ImagePicker.launchImageLibrary(selectorOption, (response) => {
+      if(typeof response.uri !== 'undefined') {
+        this.setState({
+          codingVideo: response.uri
+        })
+      }
+    })
+  }
+  selectProgrammerVideo () {
+    ImagePicker.launchImageLibrary(selectorOption, (response) => {
+      if(typeof response.uri !== 'undefined') {
+        this.setState({
+          programmerVideo: response.uri
+        })
+      }
+    })
+  }
+
   render() {
     const isEstablished = this.state.isConnectionEstablished;
     const stopTime = this.state.stopTime;
@@ -151,10 +179,12 @@ export default class App extends Component {
     const movieId = this.state.movieId;
     const rule = this.state.rule;
     const markerTime = this.state.markerTime;
+    const programmerVideo = this.state.programmerVideo
+    const codingVideo = this.state.codingVideo
 
     return !isEstablished ? (
       <View style={styles.container}>
-        <View>
+        <View style={styles.menu}>
           <Text style={styles.controlChild}>
             サーバアドレスを入力(ws://**(:**)(/**))
           </Text>
@@ -169,6 +199,20 @@ export default class App extends Component {
             onChangeText={movieId => this.setState({movieId})}
             value={this.state.movieId}
           />
+          <View style={styles.row}>
+            <Button
+              style={!!programmerVideo ? styles.selectedChild : styles.controlChild}
+              title="プログラマ動画を選択"
+              onPress={this.selectProgrammerVideo}
+            />
+            <Button
+              style={!!codingVideo ? styles.selectedChild : styles.controlChild}
+              title="コーディング動画を選択"
+              onPress={this.selectCodingVideo}
+            />
+          </View>
+          <Text>コ: {codingVideo}</Text>
+          <Text>プ: {programmerVideo}</Text>
           <Button
             style={styles.controlChild}
             title="Send"
@@ -277,13 +321,29 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 200,
   },
+  menu: {
+    width: codeSize.width,
+    height: codeSize.height,
+    flexDirection: 'column',
+  },
   expContainer: {
     padding: 20,
     backgroundColor: '#F5FCFF',
   },
+  row: {
+    flexDirection: 'row'
+  },
   controlChild: {
     margin: 10,
     color: 'black',
+    backgroundColor: 'rgba(200,200,200,0.3)',
+    width: codeSize.width,
+  },
+  selectedChild: {
+    margin: 10,
+    color: 'black',
+    backgroundColor: 'rgba(100,100,200,0.4)',
+    width: codeSize.width,
   },
   videoContainer: {
     position: 'absolute',
