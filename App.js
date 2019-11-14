@@ -61,7 +61,6 @@ export default class App extends Component {
       isPaused: setting.env === 'production',
       rule: '',
       isSteppable: true,
-      isMono: false
     };
     this.ws = null;
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
@@ -153,13 +152,6 @@ export default class App extends Component {
     const rule = this.state.rule;
     const markerTime = this.state.markerTime;
 
-    const isMono = this.state.isMono
-    setInterval(() => {
-      this.setState({
-        isMono: !isMono
-      })
-    }, 3000)
-
     return !isEstablished ? (
       <View style={styles.container}>
         <View>
@@ -224,7 +216,7 @@ export default class App extends Component {
           <Wipe isPaused={isPaused} currentTime={startTime} movieId={movieId} />
         ) : null*/}
         {
-          isMono === true
+          isPaused === true
           ? <View style={styles.mask} />
           : null
         }
