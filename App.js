@@ -161,18 +161,18 @@ export default class App extends Component {
 
   selectCodingVideo() {
     ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.uri !== 'undefined') {
+      if (typeof response.origURL !== 'undefined') {
         this.setState({
-          codingVideo: response.uri,
+          codingVideo: response.origURL,
         });
       }
     });
   }
   selectProgrammerVideo() {
     ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.uri !== 'undefined') {
+      if (typeof response.origURL !== 'undefined') {
         this.setState({
-          programmerVideo: response.uri,
+          programmerVideo: response.origURL,
         });
       }
     });
