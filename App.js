@@ -242,7 +242,7 @@ export default class App extends Component {
             }}
             selectedVideoTrack={{
               type: "resolution",
-              value: 480
+              value: codeSize.height
             }}
             onBuffer={this.onBuffer}
             paused={isPaused}
