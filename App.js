@@ -47,6 +47,9 @@ import Wipe from './components/Wipe';
 
 const selectorOption = {
   mediaType: 'video',
+  storageOptions: {
+    skipBackup: true,
+  }
 };
 
 export default class App extends Component {
@@ -89,6 +92,7 @@ export default class App extends Component {
       Alert.alert('NOTICE', '映像ファイルを選択してください。');
       return;
     }
+
     this.ws = new WebSocket(this.state.addr);
 
     this.ws.onopen = () => {
@@ -236,6 +240,10 @@ export default class App extends Component {
             ref={ref => {
               this.player = ref;
             }}
+            selectedVideoTrack={{
+              type: "resolution",
+              value: 480
+            }}
             onBuffer={this.onBuffer}
             paused={isPaused}
             onProgress={movie => {
@@ -342,7 +350,7 @@ const styles = StyleSheet.create({
   controlChild: {
     margin: 10,
     color: 'black',
-    backgroundColor: 'rgba(200,200,200,0.3)',
+    backgroundColor: 'rgba(200,200,200,0.2)',
     width: codeSize.width,
   },
   selectedChild: {

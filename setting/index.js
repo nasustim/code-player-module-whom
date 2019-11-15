@@ -12,8 +12,8 @@ const env = 'production';
  * 
  *  'contain' || 'separate'
  */
-const mode = 'contain'
-//const mode = 'separate'
+//const mode = 'contain'
+const mode = 'separate'
 
 const setting = {
   env,

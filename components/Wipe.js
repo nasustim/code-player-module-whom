@@ -31,6 +31,10 @@ export default class Wipe extends Component {
     return (
       <View style={styles.container1}>
         <Video
+          selectedVideoTrack={{
+            type: "resolution",
+            value: meSize.height
+          }}
           style={styles.video1}
           source={{uri: uri}}
           ref={ref => {
