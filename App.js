@@ -136,7 +136,9 @@ export default class App extends Component {
           });
         } else {
           this.setState({
-            rule: '*',
+            rule: {
+              誰が: "*"
+            },
           });
         }
       } else if (data.signal == 3 && this.state.movieId == '9') {
