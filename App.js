@@ -67,7 +67,9 @@ export default class App extends Component {
       markerTime: -1,
       currentTime: 0,
       isPaused: setting.env === 'production',
-      rule: '',
+      rule: {
+        誰が: "*"
+      },
       isSteppable: true,
       programmerVideo: '',
       codingVideo: '',
