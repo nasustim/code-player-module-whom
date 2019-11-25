@@ -43,7 +43,6 @@ import {codeSize} from './resources/sizes';
 //import experiences from './deviceTest/unit/filtering/experiences';
 //import {codeSize} from './deviceTest/unit/filtering/sizes';
 
-import Wipe from './components/Wipe';
 
 const selectorOption = {
   mediaType: 'video',
@@ -71,13 +70,11 @@ export default class App extends Component {
         誰が: "*"
       },
       isSteppable: true,
-      programmerVideo: '',
       codingVideo: '',
     };
     this.ws = null;
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
     this.selectCodingVideo = this.selectCodingVideo.bind(this);
-    this.selectProgrammerVideo = this.selectProgrammerVideo.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
@@ -172,26 +169,15 @@ export default class App extends Component {
       }
     });
   }
-  selectProgrammerVideo() {
-    ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.origURL !== 'undefined') {
-        this.setState({
-          programmerVideo: response.origURL,
-        });
-      }
-    });
-  }
 
   render() {
     const isEstablished = this.state.isConnectionEstablished;
     const stopTime = this.state.stopTime;
     const currentTime = this.state.currentTime;
-    const startTime = this.state.startTime;
     const isPaused = this.state.isPaused;
     const movieId = this.state.movieId;
     const rule = this.state.rule;
     const markerTime = this.state.markerTime;
-    const programmerVideo = this.state.programmerVideo;
     const codingVideo = this.state.codingVideo;
 
     return !isEstablished ? (
@@ -213,20 +199,12 @@ export default class App extends Component {
           />
           <View style={styles.row}>
             <Button
-              style={
-                programmerVideo ? styles.selectedChild : styles.controlChild
-              }
-              title="プログラマ動画を選択"
-              onPress={this.selectProgrammerVideo}
-            />
-            <Button
               style={codingVideo ? styles.selectedChild : styles.controlChild}
               title="コーディング動画を選択"
               onPress={this.selectCodingVideo}
             />
           </View>
           <Text>コ: {codingVideo}</Text>
-          <Text>プ: {programmerVideo}</Text>
           <Button
             style={styles.controlChild}
             title="Send"
@@ -274,13 +252,6 @@ export default class App extends Component {
             }}
           />
         </View>
-        {isPaused === false && setting.mode == 'separate' ? (
-          <Wipe
-            isPaused={isPaused}
-            currentTime={startTime}
-            uri={programmerVideo}
-          />
-        ) : null}
         {isPaused === true ? <View style={styles.mask} /> : null}
       </View>
     ) : (
