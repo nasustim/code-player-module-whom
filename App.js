@@ -45,6 +45,8 @@ import {codeSize} from './resources/sizes';
 
 import Wipe from './components/Wipe';
 
+var tryReconnect = false
+
 const selectorOption = {
   mediaType: 'video',
   storageOptions: {
@@ -104,7 +106,6 @@ export default class App extends Component {
       );
       this.setState({
         isConnectionEstablished: true,
-        isPaused: true,
       });
     };
     this.ws.onmessage = event => {
@@ -143,15 +144,13 @@ export default class App extends Component {
         this.setState({
           rule: data.rule,
         });
-      }
+      } else if (data.signal == "setSeekTime"){}
     };
     this.ws.onerror = err => {
-      this.ws = null;
+      this.ws = new WebSocket(this.state.addr)
     };
     this.ws.onclose = event => {
-      console.log(
-        `connection closed, code: ${event.code}, reason: ${event.reason}`,
-      );
+      this.ws = new WebSocket(this.state.addr)
     };
   }
 
