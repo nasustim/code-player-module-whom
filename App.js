@@ -45,13 +45,13 @@ import {codeSize} from './resources/sizes';
 
 import Wipe from './components/Wipe';
 
-var tryReconnect = false
+var tryReconnect = false;
 
 const selectorOption = {
   mediaType: 'video',
   storageOptions: {
     skipBackup: true,
-  }
+  },
 };
 
 export default class App extends Component {
@@ -70,7 +70,7 @@ export default class App extends Component {
       currentTime: 0,
       isPaused: setting.env === 'production',
       rule: {
-        誰が: "*"
+        誰が: '*',
       },
       isSteppable: true,
       programmerVideo: '',
@@ -140,7 +140,7 @@ export default class App extends Component {
         } else {
           this.setState({
             rule: {
-              誰が: "*"
+              誰が: '*',
             },
           });
         }
@@ -148,13 +148,14 @@ export default class App extends Component {
         this.setState({
           rule: data.rule,
         });
-      } else if (data.signal == "setSeekTime"){}
+      } else if (data.signal == 'setSeekTime') {
+      }
     };
     this.ws.onerror = err => {
-      this.ws = new WebSocket(this.state.addr)
+      this.ws = new WebSocket(this.state.addr);
     };
     this.ws.onclose = event => {
-      this.ws = new WebSocket(this.state.addr)
+      this.ws = new WebSocket(this.state.addr);
     };
   }
 
@@ -244,8 +245,8 @@ export default class App extends Component {
               this.player = ref;
             }}
             selectedVideoTrack={{
-              type: "resolution",
-              value: codeSize.height
+              type: 'resolution',
+              value: codeSize.height,
             }}
             onBuffer={this.onBuffer}
             paused={isPaused}
