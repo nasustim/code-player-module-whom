@@ -225,8 +225,8 @@ export default class App extends Component {
               onPress={this.selectCodingVideo}
             />
           </View>
-          <Text>コ: {codingVideo}</Text>
-          <Text>プ: {programmerVideo}</Text>
+          <Text>Code: {codingVideo}</Text>
+          <Text>Me:   {programmerVideo}</Text>
           <Button
             style={styles.controlChild}
             title="Send"

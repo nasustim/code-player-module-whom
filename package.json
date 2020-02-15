@@ -6,7 +6,7 @@
     "start": "react-native start",
     "ios": "react-native run-ios --simulator=\"iPad (5th generation)\" --verbose && react-native log-ios",
     "test": "jest",
-    "test:": "echo 'test' && exit 1",
+    "test:dum": "echo 'test seq done' && exit 0",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ./App.js && eslint --fix ./components/*"
   },
