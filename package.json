@@ -8,7 +8,7 @@
     "test": "jest",
     "test:dum": "echo 'test seq done' && exit 0",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ./App.js && eslint --fix ./components/*"
+    "lint:fix": "eslint --fix ./src/App.js && eslint --fix ./src/components/*"
   },
   "dependencies": {
     "react": "16.8.6",

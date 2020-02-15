@@ -6,7 +6,7 @@
  * @flow
  */
 
-import setting from './setting';
+import setting from '../setting';
 
 import React, {Component, Fragment} from 'react';
 import {
@@ -25,23 +25,23 @@ import ImagePicker from 'react-native-image-picker';
 /**
  * Production
  */
-import {codeVideoList} from './resources/videoList';
-import experiences from './resources/experiences';
-import {codeSize} from './resources/sizes';
+import {codeVideoList} from '../resources/videoList';
+import experiences from '../resources/experiences';
+import {codeSize} from '../resources/sizes';
 
 /**
  * unitTest/coding
  */
-//import {codeVideoList} from './deviceTest/unit/coding/videoList';
-//import experiences from './deviceTest/unit/coding/experiences';
-//import {codeSize} from './deviceTest/unit/coding/sizes';
+// import {codeVideoList} from './deviceTest/unit/coding/videoList';
+// import experiences from './deviceTest/unit/coding/experiences';
+// import {codeSize} from './deviceTest/unit/coding/sizes';
 
 /**
  * unitTest/filtering
  */
-//import {codeVideoList} from './deviceTest/unit/filtering/videoList';
-//import experiences from './deviceTest/unit/filtering/experiences';
-//import {codeSize} from './deviceTest/unit/filtering/sizes';
+// import {codeVideoList} from './deviceTest/unit/filtering/videoList';
+// import experiences from './deviceTest/unit/filtering/experiences';
+// import {codeSize} from './deviceTest/unit/filtering/sizes';
 
 import Wipe from './components/Wipe';
 
@@ -55,7 +55,6 @@ const selectorOption = {
 };
 
 export default class App extends Component {
-  ws;
   constructor(props) {
     super(props);
 
@@ -112,7 +111,7 @@ export default class App extends Component {
     };
     this.ws.onmessage = event => {
       const data = JSON.parse(event.data);
-      let count = this.state.count + 1;
+      const count = this.state.count + 1;
       console.log(data);
       if (data.signal == 0 && data.movieId == this.state.movieId) {
         this.setState({
@@ -172,6 +171,7 @@ export default class App extends Component {
       }
     });
   }
+
   selectProgrammerVideo() {
     ImagePicker.launchImageLibrary(selectorOption, response => {
       if (typeof response.origURL !== 'undefined') {
@@ -226,7 +226,7 @@ export default class App extends Component {
             />
           </View>
           <Text>Code: {codingVideo}</Text>
-          <Text>Me:   {programmerVideo}</Text>
+          <Text>Me: {programmerVideo}</Text>
           <Button
             style={styles.controlChild}
             title="Send"
@@ -293,7 +293,7 @@ export default class App extends Component {
                 if (rule.誰が === '*') {
                   return true;
                 }
-                for (let i in rule) {
+                for (const i in rule) {
                   if (!Array.isArray(rule[i])) {
                     if (e[i].includes(rule[i])) {
                     } else {
@@ -301,7 +301,7 @@ export default class App extends Component {
                     }
                   } else {
                     let flag = false;
-                    for (let j in rule[i]) {
+                    for (const j in rule[i]) {
                       if (rule[i][j].includes(e[i])) {
                         flag = true;
                       }
@@ -326,9 +326,9 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //flexDirection: 'row',
-    //justifyContent: 'space-between',
-    //alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
     backgroundColor: '#AAAAAA',
   },
   mask: {
