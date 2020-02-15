@@ -1,0 +1,7 @@
+**/node_modules/*
+metro.config.js
+babel.config.js
+app.json
+.eslintrc.js
+
+package.json

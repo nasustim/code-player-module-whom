@@ -6,9 +6,9 @@
  * @flow
  */
 
-import setting from '../setting';
+import setting from '../setting'
 
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from 'react'
 import {
   StyleSheet,
   View,
@@ -17,17 +17,17 @@ import {
   Button,
   Alert,
   ScrollView,
-} from 'react-native';
+} from 'react-native'
 
-import Video from 'react-native-video';
-import ImagePicker from 'react-native-image-picker';
+import Video from 'react-native-video'
+import ImagePicker from 'react-native-image-picker'
 
 /**
  * Production
  */
-import {codeVideoList} from '../resources/videoList';
-import experiences from '../resources/experiences';
-import {codeSize} from '../resources/sizes';
+import {codeVideoList} from '../resources/videoList'
+import experiences from '../resources/experiences'
+import {codeSize} from '../resources/sizes'
 
 /**
  * unitTest/coding
@@ -43,20 +43,20 @@ import {codeSize} from '../resources/sizes';
 // import experiences from './deviceTest/unit/filtering/experiences';
 // import {codeSize} from './deviceTest/unit/filtering/sizes';
 
-import Wipe from './components/Wipe';
+import Wipe from './components/Wipe'
 
-var tryReconnect = false;
+var tryReconnect = false
 
 const selectorOption = {
   mediaType: 'video',
   storageOptions: {
     skipBackup: true,
   },
-};
+}
 
 export default class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       addr: 'ws://192.168.8.10:3003', // initilal value for exhibit network
@@ -74,92 +74,92 @@ export default class App extends Component {
       isSteppable: true,
       programmerVideo: '',
       codingVideo: '',
-    };
-    this.ws = null;
-    this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
-    this.selectCodingVideo = this.selectCodingVideo.bind(this);
-    this.selectProgrammerVideo = this.selectProgrammerVideo.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
+    }
+    this.ws = null
+    this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this)
+    this.selectCodingVideo = this.selectCodingVideo.bind(this)
+    this.selectProgrammerVideo = this.selectProgrammerVideo.bind(this)
+    this.sendMessage = this.sendMessage.bind(this)
   }
 
   callWebsocketDaemon() {
     if (!this.state.addr.match(/^ws:\/\//)) {
-      Alert.alert('NOTICE', 'サーバアドレスは"ws://~~:~~"の形式');
-      return;
+      Alert.alert('NOTICE', 'サーバアドレスは"ws://~~:~~"の形式')
+      return
     }
     if (!this.state.movieId.match(/^[0-9]$/)) {
-      Alert.alert('NOTICE', 'Movie IDは0から9の間で入力してください。');
-      return;
+      Alert.alert('NOTICE', 'Movie IDは0から9の間で入力してください。')
+      return
     }
     if (this.state.movieId.match(/^[0-8]$/) && !this.state.codingVideo) {
-      Alert.alert('NOTICE', '映像ファイルを選択してください。');
-      return;
+      Alert.alert('NOTICE', '映像ファイルを選択してください。')
+      return
     }
 
-    this.ws = new WebSocket(this.state.addr);
+    this.ws = new WebSocket(this.state.addr)
 
     this.ws.onopen = () => {
       this.ws.send(
         JSON.stringify({
           movieId: this.state.movieId,
           signal: 0,
-        }),
-      );
+        })
+      )
       this.setState({
         isConnectionEstablished: true,
-      });
-    };
+      })
+    }
     this.ws.onmessage = event => {
-      const data = JSON.parse(event.data);
-      const count = this.state.count + 1;
-      console.log(data);
+      const data = JSON.parse(event.data)
+      const count = this.state.count + 1
+      console.log(data)
       if (data.signal == 0 && data.movieId == this.state.movieId) {
         this.setState({
           isPaused: false,
           startTime: this.state.currentTime,
           stopTime: data.time,
           count: count,
-        });
+        })
       } else if (data.signal == 1 && data.movieId == this.state.movieId) {
         this.setState({
           markerTime: data.time,
           startTime: this.state.currentTime,
           isPaused: false,
           count: count,
-        });
+        })
       } else if (data.signal == 2) {
         if (this.state.movieId != '9') {
-          this.player.seek(0);
+          this.player.seek(0)
           this.setState({
             isPaused: true,
             isSteppable: true,
             stopTime: 980,
             markerTime: -1,
-          });
+          })
         } else {
           this.setState({
             rule: {
               誰が: '*',
             },
-          });
+          })
         }
       } else if (data.signal == 3 && this.state.movieId == '9') {
         this.setState({
           rule: data.rule,
-        });
+        })
       } else if (data.signal == 'setSeekTime') {
       }
-    };
+    }
     this.ws.onerror = err => {
-      this.ws = new WebSocket(this.state.addr);
-    };
+      this.ws = new WebSocket(this.state.addr)
+    }
     this.ws.onclose = event => {
-      this.ws = new WebSocket(this.state.addr);
-    };
+      this.ws = new WebSocket(this.state.addr)
+    }
   }
 
   sendMessage(obj) {
-    this.ws.send(JSON.stringify(obj));
+    this.ws.send(JSON.stringify(obj))
   }
 
   selectCodingVideo() {
@@ -167,9 +167,9 @@ export default class App extends Component {
       if (typeof response.origURL !== 'undefined') {
         this.setState({
           codingVideo: response.origURL,
-        });
+        })
       }
-    });
+    })
   }
 
   selectProgrammerVideo() {
@@ -177,22 +177,22 @@ export default class App extends Component {
       if (typeof response.origURL !== 'undefined') {
         this.setState({
           programmerVideo: response.origURL,
-        });
+        })
       }
-    });
+    })
   }
 
   render() {
-    const isEstablished = this.state.isConnectionEstablished;
-    const stopTime = this.state.stopTime;
-    const currentTime = this.state.currentTime;
-    const startTime = this.state.startTime;
-    const isPaused = this.state.isPaused;
-    const movieId = this.state.movieId;
-    const rule = this.state.rule;
-    const markerTime = this.state.markerTime;
-    const programmerVideo = this.state.programmerVideo;
-    const codingVideo = this.state.codingVideo;
+    const isEstablished = this.state.isConnectionEstablished
+    const stopTime = this.state.stopTime
+    const currentTime = this.state.currentTime
+    const startTime = this.state.startTime
+    const isPaused = this.state.isPaused
+    const movieId = this.state.movieId
+    const rule = this.state.rule
+    const markerTime = this.state.markerTime
+    const programmerVideo = this.state.programmerVideo
+    const codingVideo = this.state.codingVideo
 
     return !isEstablished ? (
       <View style={styles.container}>
@@ -242,7 +242,7 @@ export default class App extends Component {
             style={styles.video}
             source={{uri: codingVideo}}
             ref={ref => {
-              this.player = ref;
+              this.player = ref
             }}
             selectedVideoTrack={{
               type: 'resolution',
@@ -254,21 +254,21 @@ export default class App extends Component {
               if (Math.floor(movie.currentTime) !== currentTime) {
                 this.setState({
                   currentTime: Math.floor(movie.currentTime),
-                });
+                })
 
                 if (Math.floor(movie.currentTime) === stopTime) {
                   this.sendMessage({
                     signal: 1,
                     movieId: movieId,
-                  });
+                  })
                   this.setState({
                     isPaused: true,
-                  });
+                  })
                 } else if (Math.floor(movie.currentTime) === markerTime) {
                   this.sendMessage({
                     signal: 2,
                     movieId: movieId,
-                  });
+                  })
                 }
               }
             }}
@@ -291,35 +291,35 @@ export default class App extends Component {
             {JSON.stringify(
               experiences.filter(e => {
                 if (rule.誰が === '*') {
-                  return true;
+                  return true
                 }
                 for (const i in rule) {
                   if (!Array.isArray(rule[i])) {
                     if (e[i].includes(rule[i])) {
                     } else {
-                      return false;
+                      return false
                     }
                   } else {
-                    let flag = false;
+                    let flag = false
                     for (const j in rule[i]) {
                       if (rule[i][j].includes(e[i])) {
-                        flag = true;
+                        flag = true
                       }
                     }
                     if (flag === false) {
-                      return false;
+                      return false
                     }
                   }
                 }
-                return true;
+                return true
               }),
               null,
-              4,
+              4
             )}
           </Text>
         </Fragment>
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -378,4 +378,4 @@ const styles = StyleSheet.create({
   experiences: {
     textAlign: 'left',
   },
-});
+})
