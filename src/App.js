@@ -44,6 +44,7 @@ import {codeSize} from '../resources/sizes'
 // import {codeSize} from './deviceTest/unit/filtering/sizes';
 
 import Wipe from './components/Wipe'
+import StartMenu from './components/StartMenu'
 
 var tryReconnect = false
 
@@ -77,9 +78,18 @@ export default class App extends Component {
     }
     this.ws = null
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this)
-    this.selectCodingVideo = this.selectCodingVideo.bind(this)
-    this.selectProgrammerVideo = this.selectProgrammerVideo.bind(this)
+    this.setWorkState = this.setWorkState.bind(this)
     this.sendMessage = this.sendMessage.bind(this)
+  }
+
+  setWorkState({addr, movieId, codingVideo, programmerVideo}) {
+    this.setState({
+      addr,
+      movieId,
+      codingVideo,
+      programmerVideo,
+    })
+    this.callWebsocketDaemon()
   }
 
   callWebsocketDaemon() {
@@ -162,26 +172,6 @@ export default class App extends Component {
     this.ws.send(JSON.stringify(obj))
   }
 
-  selectCodingVideo() {
-    ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.origURL !== 'undefined') {
-        this.setState({
-          codingVideo: response.origURL,
-        })
-      }
-    })
-  }
-
-  selectProgrammerVideo() {
-    ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.origURL !== 'undefined') {
-        this.setState({
-          programmerVideo: response.origURL,
-        })
-      }
-    })
-  }
-
   render() {
     const isEstablished = this.state.isConnectionEstablished
     const stopTime = this.state.stopTime
@@ -195,45 +185,7 @@ export default class App extends Component {
     const codingVideo = this.state.codingVideo
 
     return !isEstablished ? (
-      <View style={styles.container}>
-        <View style={styles.menu}>
-          <Text style={styles.controlChild}>
-            サーバアドレスを入力(ws://**(:**)(/**))
-          </Text>
-          <TextInput
-            style={styles.controlChild}
-            onChangeText={addr => this.setState({addr})}
-            value={this.state.addr}
-          />
-          <Text style={styles.controlChild}>動画IDを入力(0 - 8)</Text>
-          <TextInput
-            style={styles.controlChild}
-            onChangeText={movieId => this.setState({movieId})}
-            value={this.state.movieId}
-          />
-          <View style={styles.row}>
-            <Button
-              style={
-                programmerVideo ? styles.selectedChild : styles.controlChild
-              }
-              title="プログラマ動画を選択"
-              onPress={this.selectProgrammerVideo}
-            />
-            <Button
-              style={codingVideo ? styles.selectedChild : styles.controlChild}
-              title="コーディング動画を選択"
-              onPress={this.selectCodingVideo}
-            />
-          </View>
-          <Text>Code: {codingVideo}</Text>
-          <Text>Me: {programmerVideo}</Text>
-          <Button
-            style={styles.controlChild}
-            title="Send"
-            onPress={this.callWebsocketDaemon}
-          />
-        </View>
-      </View>
+      <StartMenu setWorkState={this.setWorkState} />
     ) : movieId !== '9' ? (
       <View style={styles.container}>
         <View style={styles.videoContainer}>
