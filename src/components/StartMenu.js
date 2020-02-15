@@ -17,6 +17,8 @@ const initialState = Object.fromEntries(new Map(startMenuKeys.map(v => [v, '']))
 const StartMenu = ({setWorkState}) => {
   const [state, changeState] = useState(initialState)
 
+  load('ipaddr')
+
   function sendProps() {
     setWorkState(state)
   }

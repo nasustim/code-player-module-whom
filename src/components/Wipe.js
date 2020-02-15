@@ -10,7 +10,7 @@ import React, {Component} from 'react'
 import {StyleSheet, View} from 'react-native'
 import Video from 'react-native-video'
 
-import {meSize, meRatio, codeSize} from '../resources/sizes'
+import {meSize, meRatio, codeSize} from '../../resources/sizes'
 
 export default class Wipe extends Component {
   constructor(props) {
