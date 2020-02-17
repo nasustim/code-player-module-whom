@@ -10,9 +10,8 @@ import {
   Modal,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
-import {load, save, keys} from '../utils/data'
 
-import {startMenuInitValues, startMenuKeys, initHistory} from '../const'
+import {startMenuInitValues, startMenuKeys} from '../const'
 import {meSize, meRatio, codeSize} from '../../resources/sizes'
 
 const selectorOption = {
@@ -20,25 +19,11 @@ const selectorOption = {
   storageOptions: {
     skipBackup: true,
   },
+  noData: true,
 }
 
 const StartMenu = ({setWorkState}) => {
   const [state, changeState] = useState(startMenuInitValues)
-  useEffect(() => {
-    async function setHistory () {
-      return new Promise((resolve) => {
-        for(let key of keys) {
-          const nextHistory = await load({key})
-            .then(v => v.map(v => ({v, id: key})))
-            .catch(e => {Alert.alert('ERROR', 'Load history failure')})
-            
-          updateState(Object.assign('history', nextHistory))
-        }
-        resolve()
-      })
-    }
-    setHistory()
-  }, [])
   
   function sendProps() {
     setWorkState(state)
@@ -53,17 +38,11 @@ const StartMenu = ({setWorkState}) => {
     ImagePicker.launchImageLibrary(selectorOption, response => {
       if (typeof response.origURL !== 'undefined'){
         updateState(key, response.origURL)
-        save({key, value: response.origURL})
-          .then(v => Alert.alert('SUCCESS', 'Read Video'))
-          .catch(e => Alert.alert('WARN', `${e}`))
       }else{
         Alert.alert('ERROR', 'Cannot Read Video')
       }
     })
   }
-
-
-  setHistory()
 
   return (
     <View style={styles.container}>
@@ -113,8 +92,8 @@ const StartMenu = ({setWorkState}) => {
           />
           <Text
             style={styles.openSelector}
-            onPress={() => {updateState('isShowURIHistory', true)}}
-          >open history</Text>
+            onPress={() => {updateState('addr', 'ws://192.168.8.10:3003')}}
+          >load iamas2020 addr</Text>
         </View>
 
         <Text style={styles.text}>Movie ID: (0 - 9)</Text>
@@ -140,10 +119,6 @@ const StartMenu = ({setWorkState}) => {
             style={styles.openSelector}
             onPress={() => {selectVideo('programmerVideo')}}
           >Browse</Text>
-          <Text
-            style={styles.openSelector}
-            onPress={() => {updateState('isShowProgrammerVideoHistory', true)}}
-          >Open History</Text>
         </View>
 
         <Text style={styles.text}>Coding Video URI</Text>
@@ -158,10 +133,6 @@ const StartMenu = ({setWorkState}) => {
             style={styles.openSelector}
             onPress={() => {selectVideo('codingVideo')}}
           >Browse</Text>
-          <Text
-            style={styles.openSelector}
-            onPress={() => {updateState('isShowCodingVideoHistory', true)}}
-          >Open History</Text>
         </View>
 
 
@@ -173,7 +144,7 @@ const StartMenu = ({setWorkState}) => {
         </Text>
 
 
-        <Text style={styles.notice}>何かあればM2日比野まで: (hibino17@iamas.ac.jp)</Text>
+        <Text style={styles.notice}>展示中に何かあれば M2日比野 まで: (hibino17@iamas.ac.jp)</Text>
       </ScrollView>
     </View>
   )
@@ -236,7 +207,7 @@ const styles = StyleSheet.create({
     borderColor: UN_REV_COLOR,
     borderWidth: 1,
 //    width: codeSize.width - (20 * 2) ,
-    flex: 8,
+    flex: 9,
   },
   openSelector: {
     padding: 7,

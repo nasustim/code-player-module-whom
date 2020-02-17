@@ -1,6 +1,6 @@
 export const startMenuInitValues = {
   'addr': 'ws://192.168.0.10:3003',
-  'movieId': '0',
+  'movieId': 'unset',
   'codingVideo': '',
   'programmerVideo': '',
   'isShowCodingVideoHistory': false,
