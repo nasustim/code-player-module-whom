@@ -6,8 +6,11 @@ export const startMenuInitValues = {
   'isShowCodingVideoHistory': false,
   'isShowProgrammerVideoHistory': false,
   'isShowURIHistory': false,
+  'history': {
+    'codingVideo': [],
+    'programmerVideo': [],
+    'addr': []
+  }
 }
 
 export const startMenuKeys = Object.keys(startMenuInitValues)
-
-export const listSample = [{id: 'codingVideo', value: 'code'}, {id: 'codingVideo', value: 'code'}, {id: 'codingVideo', value: 'code'}, {id: 'codingVideo', value: 'code'}, ]

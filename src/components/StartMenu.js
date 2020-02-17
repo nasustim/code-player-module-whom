@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   StyleSheet,
   View,
@@ -10,16 +10,36 @@ import {
   Modal,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
-import {load} from '../utils/data'
+import {load, save, keys} from '../utils/data'
 
-import {startMenuInitValues, startMenuKeys, listSample} from '../const'
+import {startMenuInitValues, startMenuKeys, initHistory} from '../const'
 import {meSize, meRatio, codeSize} from '../../resources/sizes'
+
+const selectorOption = {
+  mediaType: 'video',
+  storageOptions: {
+    skipBackup: true,
+  },
+}
 
 const StartMenu = ({setWorkState}) => {
   const [state, changeState] = useState(startMenuInitValues)
-
-  load('ipaddr')
-
+  useEffect(() => {
+    async function setHistory () {
+      return new Promise((resolve) => {
+        for(let key of keys) {
+          const nextHistory = await load({key})
+            .then(v => v.map(v => ({v, id: key})))
+            .catch(e => {Alert.alert('ERROR', 'Load history failure')})
+            
+          updateState(Object.assign('history', nextHistory))
+        }
+        resolve()
+      })
+    }
+    setHistory()
+  }, [])
+  
   function sendProps() {
     setWorkState(state)
   }
@@ -30,56 +50,53 @@ const StartMenu = ({setWorkState}) => {
   function selectVideo(key) {
     if (['codingVideo', 'programmerVideo'].indexOf(key) < 0) return -1
 
-    // @ToDO 履歴からも入力できるようにする
-
     ImagePicker.launchImageLibrary(selectorOption, response => {
-      if (typeof response.origURL !== 'undefined')
+      if (typeof response.origURL !== 'undefined'){
         updateState(key, response.origURL)
-      else Alert.alert('ERROR', 'Cannot Read Video')
+        save({key, value: response.origURL})
+          .then(v => Alert.alert('SUCCESS', 'Read Video'))
+          .catch(e => Alert.alert('WARN', `${e}`))
+      }else{
+        Alert.alert('ERROR', 'Cannot Read Video')
+      }
     })
   }
 
+
+  setHistory()
+
   return (
     <View style={styles.container}>
-
-
         <Modal
           style={styles.historyModal}
           animationType="slide"
           transparent={false}
-          visible={state.isShowURIHistory}
+          visible={state.isShowURIHistory || state.isShowCodingVideoHistory || state.isShowProgrammerVideoHistory}
           presentationStyle={'pageSheet'}
         >
-          <Text style={styles.headerText}>uri</Text>
+          <Text style={styles.headerText}>{
+            state.isShowURIHistory ?
+              'Server URL' :
+            state.isShowCodingVideoHistory ?
+              'Coding Video History' :
+            state.isShowProgrammerVideoHistory ?
+              'Programmer Video History':
+            ``
+          }</Text>
           <Text
           style={styles.closeButton}
-          onPress={() => {updateState('isShowURIHistory', false)}}>Close</Text>
-        </Modal>
-
-        <Modal
-          style={styles.historyModal}
-          animationType="slide"
-          transparent={false}
-          visible={state.isShowProgrammerVideoHistory}
-          presentationStyle={'pageSheet'}
-        >
-          <Text style={styles.headerText}>prog</Text>
-          <Text
-          style={styles.closeButton}
-          onPress={() => {updateState('isShowProgrammerVideoHistory', false)}}>Close</Text>
-        </Modal>
-
-        <Modal
-          style={styles.historyModal}
-          animationType="slide"
-          transparent={false}
-          visible={state.isShowCodingVideoHistory}
-          presentationStyle={'pageSheet'}
-        >
-          <Text style={styles.headerText}>code</Text>
-          <Text
-          style={styles.closeButton}
-          onPress={() => {updateState('isShowCodingVideoHistory', false)}}>Close</Text>
+          onPress={() => {
+            state.isShowURIHistory ?
+              updateState('isShowURIHistory', false) :
+            state.isShowCodingVideoHistory ?
+              updateState('isShowCodingVideoHistory', false) :
+            updateState('isShowProgrammerVideoHistory', false)
+          }}>Close</Text>
+          {() => {
+            const id = state.isShowURIHistory ? 'addr' : state.isShowCodingVideoHistory ? 'codingVideo' : 'programmerVideo'
+            const flag = state.isShowURIHistory ? 'isShowURIHistory' : state.isShowCodingVideoHistory ? 'isShowCodingVideoHistory' : 'isShowProgrammerVideoHistory'
+            return history[id].map(item => (<Text style={styles.selectButton} onPress={()=>{updateState(id, item.v);updateState(flag, false)}}>{item.v}</Text>))
+          }}
         </Modal>
 
       <ScrollView style={styles.menu}>
@@ -121,11 +138,11 @@ const StartMenu = ({setWorkState}) => {
           />
           <Text
             style={styles.openSelector}
-            onPress={() => {selectVideo('codingVideo')}}
+            onPress={() => {selectVideo('programmerVideo')}}
           >Browse</Text>
           <Text
             style={styles.openSelector}
-            onPress={() => {updateState('isShowCodingVideoHistory', true)}}
+            onPress={() => {updateState('isShowProgrammerVideoHistory', true)}}
           >Open History</Text>
         </View>
 
@@ -143,7 +160,7 @@ const StartMenu = ({setWorkState}) => {
           >Browse</Text>
           <Text
             style={styles.openSelector}
-            onPress={() => {updateState('isShowProgrammerVideoHistory', true)}}
+            onPress={() => {updateState('isShowCodingVideoHistory', true)}}
           >Open History</Text>
         </View>
 
@@ -293,7 +310,7 @@ const styles = StyleSheet.create({
   },
   historyModal: {
     margin: 60,
-  }
+  },
 })
 
 // not use

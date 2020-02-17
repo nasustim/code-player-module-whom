@@ -47,13 +47,6 @@ import StartMenu from './components/StartMenu'
 
 var tryReconnect = false
 
-const selectorOption = {
-  mediaType: 'video',
-  storageOptions: {
-    skipBackup: true,
-  },
-}
-
 export default class App extends Component {
   constructor(props) {
     super(props)

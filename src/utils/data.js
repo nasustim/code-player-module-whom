@@ -1,29 +1,25 @@
-import {AsyncStorage} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
-const keys = ['ipaddr', 'id', 'codeuri', 'manuri']
+export const keys = ['addr', 'codingVideo', 'programmerVideo']
 const emptyList = JSON.stringify([])
-/**
- * keys:
- *   "ipaddr" or "id" or "codeuri" or "manuri"
- */
 export async function save({key, value}) {
   if (keys.indexOf(key) < 0) throw new Error('undefined key')
 
-  const list = await load(key)
-  const newList = JSON.stringify(list.unshift(value).slice(0, 10))
+  const list = await load({key})
+  const newList = JSON.stringify([value, ...list].slice(0, 10))
 
   try {
     await AsyncStorage.setItem(key, newList)
     return 'save: successful'
   } catch (e) {
-    return 'save: failure'
+    throw new Error('save: failure')
   }
 }
 
 export async function load({key}) {
-  if (keys.indexOf(key) < 0) throw new Error('undefined key')
-
   let value
+  if (keys.indexOf(key) < 0) value = emptyList
+
   try {
     value = await AsyncStorage.getItem(key)
     if (value === null) value = emptyList

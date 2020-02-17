@@ -11,6 +11,7 @@
     "prettier": "npx prettier src/App.js --write && npx prettier src/components/* --write && npx prettier src/utils/* --write"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.8.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-image-picker": "^1.1.0",
