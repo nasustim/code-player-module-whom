@@ -20,7 +20,6 @@ import {
 } from 'react-native'
 
 import Video from 'react-native-video'
-import ImagePicker from 'react-native-image-picker'
 
 /**
  * Production
