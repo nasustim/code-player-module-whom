@@ -8,9 +8,10 @@
     "test": "jest",
     "test:dum": "echo 'test seq done' && exit 0",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ./App.js && eslint --fix ./components/*"
+    "prettier": "npx prettier src/App.js --write && npx prettier src/components/* --write && npx prettier src/utils/* --write"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.8.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-image-picker": "^1.1.0",
@@ -25,6 +26,7 @@
     "eslint-plugin-jest": "^23.7.0",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
+    "prettier": "^1.19.1",
     "react-test-renderer": "16.8.6"
   },
   "jest": {
