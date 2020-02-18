@@ -153,7 +153,7 @@ export default class App extends Component {
       }
     }
     this.ws.onerror = err => {
-      this.ws = new WebSocket(this.state.addr)
+      this.ws = null
     }
     this.ws.onclose = event => {
       this.ws = null
