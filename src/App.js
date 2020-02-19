@@ -13,8 +13,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
-  Button,
   Alert,
   ScrollView,
 } from 'react-native'
@@ -44,6 +42,8 @@ import {codeSize} from '../resources/sizes'
 
 import Wipe from './components/Wipe'
 import StartMenu from './components/StartMenu'
+
+import routeSignal from './utils/routeSignal'
 
 var tryReconnect = false
 
@@ -115,42 +115,8 @@ export default class App extends Component {
       const data = JSON.parse(event.data)
       const count = this.state.count + 1
       console.log(data)
-      if (data.signal == 0 && data.movieId == this.state.movieId) {
-        this.setState({
-          isPaused: false,
-          startTime: this.state.currentTime,
-          stopTime: data.time,
-          count: count,
-        })
-      } else if (data.signal == 1 && data.movieId == this.state.movieId) {
-        this.setState({
-          markerTime: data.time,
-          startTime: this.state.currentTime,
-          isPaused: false,
-          count: count,
-        })
-      } else if (data.signal == 2) {
-        if (this.state.movieId != '9') {
-          this.player.seek(0)
-          this.setState({
-            isPaused: true,
-            isSteppable: true,
-            stopTime: 980,
-            markerTime: -1,
-          })
-        } else {
-          this.setState({
-            rule: {
-              誰が: '*',
-            },
-          })
-        }
-      } else if (data.signal == 3 && this.state.movieId == '9') {
-        this.setState({
-          rule: data.rule,
-        })
-      } else if (data.signal == 'setSeekTime') {
-      }
+      
+      routeSignal({state: this.state, setState: this.setState, player: this.player, data, count})
     }
     this.ws.onerror = err => {
       this.ws = null
