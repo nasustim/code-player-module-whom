@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {
   StyleSheet,
   View,
@@ -12,7 +12,6 @@ import {
 import ImagePicker from 'react-native-image-picker'
 
 import {startMenuInitValues, startMenuKeys} from '../const'
-import {meSize, meRatio, codeSize} from '../../resources/sizes'
 
 const selectorOption = {
   mediaType: 'video',

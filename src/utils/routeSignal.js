@@ -42,7 +42,7 @@ function routeSignal ({setState, state, player, data}) {
     case toCliSignal.FILTER_EXPERIENCE:
       if(state.movieId === '9'){
         setState({
-          rule: data.rule,  // @note ルールが何で来て、どう処理されるかかくにん
+          rule: data.rule,
         })
       }
       break
