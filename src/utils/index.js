@@ -5,7 +5,6 @@ export const toCliSignal = {
   /** ここまで */
 
   SEEK_INIT: 2,
-  FILTER_EXPERIENCE: 3,
 
   /** @note この3つは data.time と data.movieIdがわたる */
   SEEK_PAUSE: 4,

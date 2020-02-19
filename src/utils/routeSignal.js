@@ -19,6 +19,10 @@ function routeSignal ({setState, state, player, data}) {
           startTime: state.currentTime,
           markerTime: data.time,
         })
+      }else if(state.movieId === '9'){
+        setState({
+          rule: data.rule,
+        })
       }
       break
     case toCliSignal.SEEK_INIT:
@@ -38,13 +42,6 @@ function routeSignal ({setState, state, player, data}) {
         })
       }
       player.seek(0)
-      break
-    case toCliSignal.FILTER_EXPERIENCE:
-      if(state.movieId === '9'){
-        setState({
-          rule: data.rule,
-        })
-      }
       break
     case toCliSignal.SET_SEEK_TIME:
       if(state.movieId !== '9'){
