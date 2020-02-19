@@ -6,42 +6,14 @@
  * @flow
  */
 
-import setting from '../setting'
-
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {
-  StyleSheet,
-  View,
-  Text,
   Alert,
-  ScrollView,
 } from 'react-native'
 
-import Video from 'react-native-video'
-
-/**
- * Production
- */
-import {codeVideoList} from '../resources/videoList'
-import experiences from '../resources/experiences'
-import {codeSize} from '../resources/sizes'
-
-/**
- * unitTest/coding
- */
-// import {codeVideoList} from './deviceTest/unit/coding/videoList';
-// import experiences from './deviceTest/unit/coding/experiences';
-// import {codeSize} from './deviceTest/unit/coding/sizes';
-
-/**
- * unitTest/filtering
- */
-// import {codeVideoList} from './deviceTest/unit/filtering/videoList';
-// import experiences from './deviceTest/unit/filtering/experiences';
-// import {codeSize} from './deviceTest/unit/filtering/sizes';
-
-import Wipe from './components/Wipe'
 import StartMenu from './components/StartMenu'
+import MainVideo from './components/MainVideo'
+import Experiences from './components/Experiences'
 
 import {globalInitialState} from './const'
 import routeSignal from './utils/routeSignal'
@@ -54,9 +26,11 @@ export default class App extends Component {
 
     this.state = globalInitialState
     this.ws = null
+    this.player = null
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this)
     this.setWorkState = this.setWorkState.bind(this)
     this.sendMessage = this.sendMessage.bind(this)
+    this.setCodePlayer = this.setCodePlayer.bind(this)
   }
 
   setWorkState({addr, movieId, codingVideo, programmerVideo}) {
@@ -119,6 +93,10 @@ export default class App extends Component {
     this.ws.send(JSON.stringify(obj))
   }
 
+  setCodePlayer (player) {
+    this.player = player
+  }
+
   render() {
     const isEstablished = this.state.isConnectionEstablished
     const stopTime = this.state.stopTime
@@ -131,150 +109,26 @@ export default class App extends Component {
     const programmerVideo = this.state.programmerVideo
     const codingVideo = this.state.codingVideo
 
-    return !isEstablished ? (
-      <StartMenu setWorkState={this.setWorkState} />
-    ) : movieId !== '9' ? (
-      <View style={styles.container}>
-        <View style={styles.videoContainer}>
-          <Video
-            fullscreen={true}
-            style={styles.video}
-            source={{uri: codingVideo}}
-            ref={ref => {
-              this.player = ref
-            }}
-            selectedVideoTrack={{
-              type: 'resolution',
-              value: codeSize.height,
-            }}
-            onBuffer={this.onBuffer}
-            paused={isPaused}
-            onProgress={movie => {
-              if (Math.floor(movie.currentTime) !== currentTime) {
-                this.setState({
-                  currentTime: Math.floor(movie.currentTime),
-                })
+    const startMenuProps = {}
+    const mainVideoProps = {codingVideo, programmerVideo, isPaused, currentTime, startTime, stopTime, markerTime,}
+    const experiencesProps = {rule, experiences,}
 
-                if (Math.floor(movie.currentTime) >= stopTime) {  // @note ストップ後に変な動きをしたらここを === に戻す
-                  this.sendMessage({
-                    signal: 1,
-                    movieId: movieId,
-                  })
-                  this.setState({
-                    isPaused: true,
-                  })
-                } else if (Math.floor(movie.currentTime) === markerTime) {
-                  this.sendMessage({
-                    signal: 2,
-                    movieId: movieId,
-                  })
-                }
-              }
-            }}
-          />
-        </View>
-        {isPaused === false && setting.mode == 'separate' ? (
-          <Wipe
-            isPaused={isPaused}
-            currentTime={startTime}
-            uri={programmerVideo}
-          />
-        ) : null}
-        {isPaused === true ? <View style={styles.mask} /> : null}
-      </View>
+    return !isEstablished ? (
+      <StartMenu 
+        setWorkState={this.setWorkState} 
+        {...startMenuProps} 
+      />
+    ) : movieId !== '9' ? (
+      <MainVideo 
+        setState={this.setState} 
+        sendMessage={this.sendMessage} 
+        setCodePlayer={this.setCodePlayer} 
+        {...mainVideoProps} 
+      />
     ) : (
-      <ScrollView style={styles.expContainer}>
-        <Fragment>
-          <Text style={styles.experiences}>
-            let 経験 ={' '}
-            {JSON.stringify(
-              experiences.filter(e => {
-                if (rule.誰が === '*') {
-                  return true
-                }
-                for (const i in rule) {
-                  if (!Array.isArray(rule[i])) {
-                    if (e[i].includes(rule[i])) {
-                    } else {
-                      return false
-                    }
-                  } else {
-                    let flag = false
-                    for (const j in rule[i]) {
-                      if (rule[i][j].includes(e[i])) {
-                        flag = true
-                      }
-                    }
-                    if (flag === false) {
-                      return false
-                    }
-                  }
-                }
-                return true
-              }),
-              null,
-              4
-            )}
-          </Text>
-        </Fragment>
-      </ScrollView>
+      <Experiences 
+        {...experiencesProps} 
+      />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    backgroundColor: '#AAAAAA',
-  },
-  mask: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width: codeSize.width,
-    height: codeSize.height,
-    position: 'absolute',
-    zIndex: 200,
-  },
-  menu: {
-    width: codeSize.width,
-    height: codeSize.height,
-    flexDirection: 'column',
-  },
-  expContainer: {
-    padding: 20,
-    backgroundColor: '#F5FCFF',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  controlChild: {
-    margin: 10,
-    color: 'black',
-    backgroundColor: 'rgba(200,200,200,0.2)',
-    width: codeSize.width,
-  },
-  selectedChild: {
-    margin: 10,
-    color: 'black',
-    backgroundColor: 'rgba(100,100,200,0.4)',
-    width: codeSize.width,
-  },
-  videoContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 1,
-  },
-  video: {
-    width: codeSize.width,
-    height: codeSize.height,
-  },
-  experiences: {
-    textAlign: 'left',
-  },
-})
