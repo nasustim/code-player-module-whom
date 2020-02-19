@@ -1,16 +1,23 @@
+import setting from '../../setting'
+
 export const startMenuInitValues = {
-  'addr': 'ws://192.168.0.10:3003',
-  'movieId': 'unset',
+  'addr': 'ws://192.168.8.10:3003', // initilal value for exhibit network
+  'movieId': '',
   'codingVideo': '',
   'programmerVideo': '',
-  'isShowCodingVideoHistory': false,
-  'isShowProgrammerVideoHistory': false,
-  'isShowURIHistory': false,
-  'history': {
-    'codingVideo': [],
-    'programmerVideo': [],
-    'addr': []
-  }
 }
 
 export const startMenuKeys = Object.keys(startMenuInitValues)
+
+export const globalInitialState = Object({}, startMenuInitValues, {
+  isConnectionStarted: false,
+  isConnectionEstablished: false,
+  startTime: 0,
+  stopTime: -1,
+  markerTime: -1,
+  currentTime: 0,
+  isPaused: true,
+  rule: {
+    誰が: '*',
+  },
+})
