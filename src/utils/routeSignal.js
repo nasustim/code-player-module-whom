@@ -1,40 +1,78 @@
+import {Alert} from 'react-native'
 import {toCliSignal} from './index.js'
-import { DrawerLayoutAndroid } from 'react-native'
 
 function routeSignal ({setState, state, player, data}) {
-  if (data.signal == toCliSignal.SET_PAUSE_POINT && data.movieId == state.movieId) {
-    setState({
-      isPaused: false,
-      startTime: state.currentTime,
-      stopTime: data.time,
-    })
-  } else if (data.signal == toCliSignal.SET_SEARCH_POINT && data.movieId == state.movieId) {
-    setState({
-      markerTime: data.time,
-      startTime: state.currentTime,
-      isPaused: false,
-    })
-  } else if (data.signal == toCliSignal.SEEK_INIT) {
-    if (state.movieId != '9') {
+  switch (data.signal){
+    case toCliSignal.SET_PAUSE_POINT:
+      if(state.movieId === data.movieId){
+        setState({
+          isPaused: false,
+          startTime: state.currentTime,
+          stopTime: data.time,
+        })
+      }
+      break
+    case toCliSignal.SET_SEARCH_POINT:
+      if(state.movieId === data.movieId){
+        setState({
+          isPaused: false,
+          startTime: state.currentTime,
+          markerTime: data.time,
+        })
+      }
+      break
+    case toCliSignal.SEEK_INIT:
+      if(state.movieId === '9'){
+        setState({
+          isPaused: true,
+          currentTime: 0,
+          startTime: 0,
+          markerTime: 1000,
+          stopTime: 1000,
+        })
+      }else {
+        setState({
+          rule: {
+            誰が: '*',
+          },
+        })
+      }
       player.seek(0)
-      setState({
-        isPaused: true,
-        stopTime: 980,
-        markerTime: -1,
-      })
-    } else {
-      setState({
-        rule: {
-          誰が: '*',
-        },
-      })
-    }
-  } else if (data.signal == toCliSignal.FILTER_EXPERIENCE && state.movieId == '9') {
-    setState({
-      rule: data.rule,
-    })
-  } else if (data.signal == toCliSignal.SET_SEEK_TIME && state.movieId != '9') {
-    player.seek(data.time)
+      break
+    case toCliSignal.FILTER_EXPERIENCE:
+      if(state.movieId === '9'){
+        setState({
+          rule: data.rule,  // @note ルールが何で来て、どう処理されるかかくにん
+        })
+      }
+      break
+    case toCliSignal.SET_SEEK_TIME:
+      if(state.movieId !== '9'){
+        setState({
+          currentTime: data.time,
+          isPaused: true,
+        })
+        seek(data.time)
+      }
+      break
+    case toCliSignal.SEEK_PAUSE:
+      if(state.movieId !== '9'){
+        setState({
+          isPaused: true,
+        })
+      }
+      break
+    case toCliSignal.SEEK_PLAY:
+      if(state.movieId !== '9'){
+        setState({
+          isPaused: false,
+        })
+      }
+      break
+    case toCliSignal.NONE:
+      break
+    default:
+      Alert.alert('ERROR', 'incoming invalid signal')
   }
 }
 

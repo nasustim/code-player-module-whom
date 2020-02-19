@@ -46,7 +46,7 @@ import StartMenu from './components/StartMenu'
 import {globalInitialState} from './const'
 import routeSignal from './utils/routeSignal'
 
-var tryReconnect = false
+// tryReconnectフラグ作った方がいいかもしれん
 
 export default class App extends Component {
   constructor(props) {

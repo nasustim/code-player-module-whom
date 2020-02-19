@@ -36,7 +36,7 @@ export default class Wipe extends Component {
             value: meSize.height,
           }}
           style={styles.video1}
-          source={{uri: uri}}
+          source={{uri}}
           ref={ref => {
             this.player = ref
           }}
