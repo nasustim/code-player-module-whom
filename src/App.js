@@ -43,6 +43,7 @@ import {codeSize} from '../resources/sizes'
 import Wipe from './components/Wipe'
 import StartMenu from './components/StartMenu'
 
+import {globalInitialState} from './const'
 import routeSignal from './utils/routeSignal'
 
 var tryReconnect = false
@@ -51,23 +52,7 @@ export default class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      addr: 'ws://192.168.8.10:3003', // initilal value for exhibit network
-      isConnectionStarted: false,
-      isConnectionEstablished: setting.env !== 'production',
-      movieId: setting.env === 'production' ? '' : '0',
-      startTime: 0,
-      stopTime: -1,
-      markerTime: -1,
-      currentTime: 0,
-      isPaused: setting.env === 'production',
-      rule: {
-        誰が: '*',
-      },
-      isSteppable: true,
-      programmerVideo: '',
-      codingVideo: '',
-    }
+    this.state = globalInitialState
     this.ws = null
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this)
     this.setWorkState = this.setWorkState.bind(this)
@@ -112,11 +97,12 @@ export default class App extends Component {
       })
     }
     this.ws.onmessage = event => {
+      // @note SET_SEEL_TIME の際はdata.timeが渡っている
+
       const data = JSON.parse(event.data)
-      const count = this.state.count + 1
       console.log(data)
       
-      routeSignal({state: this.state, setState: this.setState, player: this.player, data, count})
+      routeSignal({state: this.state, setState: this.setState, player: this.player, data})
     }
     this.ws.onerror = err => {
       this.ws = null
@@ -169,7 +155,7 @@ export default class App extends Component {
                   currentTime: Math.floor(movie.currentTime),
                 })
 
-                if (Math.floor(movie.currentTime) === stopTime) {
+                if (Math.floor(movie.currentTime) >= stopTime) {  // @note ストップ後に変な動きをしたらここを === に戻す
                   this.sendMessage({
                     signal: 1,
                     movieId: movieId,
