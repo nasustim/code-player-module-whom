@@ -5,18 +5,19 @@ import {
 } from 'react-native'
 import Video from 'react-native-video'
 
-import {codeSize} from '../resources/sizes'
+import {codeSize} from '../../resources/sizes'
 
-import Wipe from './components/Wipe'
+import Wipe from './Wipe'
 import Experiences from './Experiences'
 
 export const MainVideo = ({
-  setState, 
+  referChildState, 
   sendMessage, 
   setCodePlayer, 
   codingVideo,
   programmerVideo, 
   isPaused, 
+  isTurned,
   currentTime,
   startTime,
   stopTime,
@@ -38,7 +39,7 @@ export const MainVideo = ({
         paused={isPaused}
         onProgress={movie => {
           if (Math.floor(movie.currentTime) !== currentTime) {
-            setState({
+            referChildState({
               currentTime: Math.floor(movie.currentTime),
             })
 
@@ -47,7 +48,7 @@ export const MainVideo = ({
                 signal: 1,
                 movieId: movieId,
               })
-              setState({
+              referChildState({
                 isPaused: true,
               })
             } else if (Math.floor(movie.currentTime) === markerTime) {
@@ -63,8 +64,10 @@ export const MainVideo = ({
     {isPaused === false ? (
       <Wipe
         isPaused={isPaused}
+        isTurned={isTurned}
         currentTime={startTime}
         uri={programmerVideo}
+        isTurned={isTurned}
       />
     ) : null}
     {isPaused === true ? <View style={styles.mask} /> : null}

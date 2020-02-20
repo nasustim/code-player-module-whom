@@ -17,6 +17,7 @@ export default class Wipe extends Component {
     super(props)
     this.state = {
       isPaused: this.props.isPaused,
+      isTurned: this.props.isTurned,
       currentTime: this.props.currentTime,
       uri: this.props.uri,
     }
@@ -27,9 +28,10 @@ export default class Wipe extends Component {
   render() {
     console.log('wipe rend')
     console.log(this.props)
-    const {uri, isPaused} = this.state
+    const {uri, isPaused, isTurned} = this.state
+    const wipeStyle = isTurned ? styles.container2 : styles.container1
     return (
-      <View style={styles.container1}>
+      <View style={wipeStyle}>
         <Video
           selectedVideoTrack={{
             type: 'resolution',
@@ -54,6 +56,12 @@ const styles = StyleSheet.create({
     zIndex: 5,
     right: 50, //20,
     top: codeSize.height - Math.floor(meSize.height * meRatio) - 20, // 何故かbottom:20が効かない
+  },
+  container2: {     // isTurned: true の場合
+    position: 'absolute',
+    zIndex: 5,
+    left: 50, //20,
+    top: 20, // 何故かbottom:20が効かない
   },
   video1: {
     width: Math.floor(meSize.width * meRatio),
