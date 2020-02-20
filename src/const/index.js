@@ -1,7 +1,7 @@
 import setting from '../../setting'
 
 export const startMenuInitValues = {
-  'addr': 'ws://192.168.8.10:3003', // initilal value for exhibit network
+  'addr': 'ws://192.168.8.5:3003', // initilal value for exhibit network
   'movieId': '0',
   'codingVideo': '',
   'programmerVideo': '',
