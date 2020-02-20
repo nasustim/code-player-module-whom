@@ -4,7 +4,7 @@ import {toCliSignal} from './index.js'
 function routeSignal ({setState, state, player, data}) {
   switch (data.signal){
     case toCliSignal.SET_PAUSE_POINT:
-      if(state.movieId === data.movieId){
+      if(state.movieId === data.movieId && state.movieId !== '9'){
         setState({
           isPaused: false,
           startTime: state.currentTime,
@@ -13,7 +13,7 @@ function routeSignal ({setState, state, player, data}) {
       }
       break
     case toCliSignal.SET_SEARCH_POINT:
-      if(state.movieId === data.movieId){
+      if(state.movieId === data.movieId && state.movieId !== '9'){
         setState({
           isPaused: false,
           startTime: state.currentTime,
@@ -21,7 +21,7 @@ function routeSignal ({setState, state, player, data}) {
         })
       }else if(state.movieId === '9'){
         setState({
-          rule: data.rule,
+          rule: JSON.stringify(data.rule),
         })
       }
       break
@@ -36,9 +36,9 @@ function routeSignal ({setState, state, player, data}) {
         })
       }else {
         setState({
-          rule: {
+          rule: JSON.stringify({
             誰が: '*',
-          },
+          }),
         })
       }
       player.seek(0)

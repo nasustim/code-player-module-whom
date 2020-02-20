@@ -2,20 +2,19 @@ import React, {Fragment} from 'react'
 import {
   ScrollView,
   StyleSheet,
+  Text
 } from 'react-native'
 
 import experiences from '../../resources/experiences'
 
-export const Experiences = ({rule,}) => 
-  <ScrollView style={styles.expContainer}>
+export const Experiences = ({strRule}) => {
+  const rule = JSON.parse(strRule)
+  return <ScrollView style={styles.expContainer}>
     <Fragment>
       <Text style={styles.experiences}>
         let 経験 ={' '}
-        {JSON.stringify(
+        {judge(rule) ? JSON.stringify(experiences, null, 4) : JSON.stringify(
           experiences.filter(e => {
-            if (rule.誰が === '*') {
-              return true
-            }
             for (const i in rule) {
               if (!Array.isArray(rule[i])) {
                 if (e[i].includes(rule[i])) {
@@ -42,10 +41,9 @@ export const Experiences = ({rule,}) =>
       </Text>
     </Fragment>
   </ScrollView>
-
+}
 
 export default Experiences
-
 
 const styles = StyleSheet.create({
   expContainer: {
@@ -56,3 +54,12 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
 })
+
+function judge (rule) {
+  if(rule.hasOwnProperty('誰が')){
+    if(rule.誰が == '*'){
+      return true
+    }
+  }
+  return false
+}

@@ -30,7 +30,7 @@ const StartMenu = ({referChildState, callWebsocketDaemon, codingVideo, programme
     referChildState({[key]: value})
   }
   function selectVideo(key) {
-    if (['codingVideo', 'programmerVideo'].indexOf(key) < 0) return -1
+    // if (['codingVideo', 'programmerVideo'].indexOf(key) < 0) return -1
 
     ImagePicker.launchImageLibrary(selectorOption, response => {
       if (typeof response.origURL !== 'undefined'){
@@ -58,7 +58,7 @@ const StartMenu = ({referChildState, callWebsocketDaemon, codingVideo, programme
           />
           <Text
             style={styles.openSelector}
-            onPress={() => {updateState('addr', 'ws://192.168.8.10:3003')}}
+            onPress={() => {updateState('addr', 'ws://192.168.8.5:3003')}}
           >load iamas2020 addr</Text>
         </View>
 
@@ -68,9 +68,12 @@ const StartMenu = ({referChildState, callWebsocketDaemon, codingVideo, programme
             selectedValue={movieId}
             style={styles.picker}
             onValueChange={v => {updateState('movieId', `${v}`)}}
-          >{
-              [...(Array(10))].map((v, i) => (<Picker.Item key={`mov-${i}`} label={`${i}`} value={`${i}`} />))
-          }</Picker>
+          >
+            <Picker.Item key={`mov-0`} label={`0`} value={`0`} />
+            {
+              [...(Array(9))].map((v, i) => (<Picker.Item key={`mov-${i+1}`} label={`${i+1}`} value={`${i+1}`} />))
+            }
+          </Picker>
         </View>
 
         <Text style={styles.text}>Programmer Video URI</Text>

@@ -10,6 +10,14 @@ export const startMenuInitValues = {
 
 export const startMenuKeys = Object.keys(startMenuInitValues)
 
+export const initialRule = {
+  誰が: '*',
+  誰に: '*',
+  何をした: '*',
+  意図: '*',
+  内容: {},
+},
+
 export const globalInitialState = Object.assign({}, startMenuInitValues, {
   isConnectionStarted: false,
   isConnectionEstablished: false,
@@ -18,7 +26,5 @@ export const globalInitialState = Object.assign({}, startMenuInitValues, {
   markerTime: 9999,
   currentTime: 0,
   isPaused: true,
-  rule: {
-    誰が: '*',
-  },
+  rule: JSON.stringify(initialRule)
 })
