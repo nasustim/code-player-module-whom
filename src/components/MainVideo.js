@@ -11,7 +11,7 @@ import Wipe from './Wipe'
 import Experiences from './Experiences'
 
 export const MainVideo = ({
-  setState, 
+  referChildState, 
   sendMessage, 
   setCodePlayer, 
   codingVideo,
@@ -39,7 +39,7 @@ export const MainVideo = ({
         paused={isPaused}
         onProgress={movie => {
           if (Math.floor(movie.currentTime) !== currentTime) {
-            setState({
+            referChildState({
               currentTime: Math.floor(movie.currentTime),
             })
 
@@ -48,7 +48,7 @@ export const MainVideo = ({
                 signal: 1,
                 movieId: movieId,
               })
-              setState({
+              referChildState({
                 isPaused: true,
               })
             } else if (Math.floor(movie.currentTime) === markerTime) {

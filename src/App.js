@@ -32,22 +32,19 @@ export default class App extends Component {
     this.setWorkState = this.setWorkState.bind(this)
     this.sendMessage = this.sendMessage.bind(this)
     this.setCodePlayer = this.setCodePlayer.bind(this)
+    this.referChildState = this.referChildState.bind(this)
   }
 
-  setWorkState({addr, movieId, codingVideo, programmerVideo}) {
-    this.setState({
-      addr,
-      movieId,
-      codingVideo,
-      programmerVideo,
-      isTurned,
-    })
+  referChildState (diff) {
+    this.setState(Object.assign({}, this.state, diff))
+  }
+  setWorkState() {
     this.callWebsocketDaemon()
   }
 
   callWebsocketDaemon() {
 
-    Alert.alert('TEST', `addr: ${this.state.addr}, \ncodingVideo: ${this.state.codingVideo}, \nprogrammerVideo: ${this.state.programmerVideo}, \nmovieId${this.state.movieId}, \nisTurned: ${this.state.isTurned}`)
+    // Alert.alert('TEST', `addr: ${this.state.addr}, \ncodingVideo: ${this.state.codingVideo}, \nprogrammerVideo: ${this.state.programmerVideo}, \nmovieId${this.state.movieId}, \nisTurned: ${this.state.isTurned}`)
 
     if (!this.state.addr.match(/^ws:\/\//)) {
       Alert.alert('NOTICE', 'サーバアドレスは"ws://~~:~~"の形式')
@@ -103,6 +100,7 @@ export default class App extends Component {
   }
 
   render() {
+    const addr = this.state.addr
     const isEstablished = this.state.isConnectionEstablished
     const stopTime = this.state.stopTime
     const currentTime = this.state.currentTime
@@ -115,18 +113,19 @@ export default class App extends Component {
     const programmerVideo = this.state.programmerVideo
     const codingVideo = this.state.codingVideo
 
-    const startMenuProps = {}
+    const startMenuProps = {codingVideo, programmerVideo, isTurned, movieId, addr,}
     const mainVideoProps = {codingVideo, programmerVideo, isPaused, isTurned, currentTime, startTime, stopTime, markerTime,}
     const experiencesProps = {rule,}
 
     return !isEstablished ? (
       <StartMenu 
-        setWorkState={this.setWorkState} 
+        referChildState={this.referChildState}
+        callWebsocketDaemon={this.callWebsocketDaemon}
         {...startMenuProps} 
       />
     ) : movieId !== '9' ? (
       <MainVideo 
-        setState={this.setState} 
+        referChildState={this.referChildState} 
         sendMessage={this.sendMessage} 
         setCodePlayer={this.setCodePlayer} 
         {...mainVideoProps} 

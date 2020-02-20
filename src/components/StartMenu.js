@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
   StyleSheet,
   View,
@@ -11,7 +11,7 @@ import {
 import ImagePicker from 'react-native-image-picker'
 import CheckBox from 'react-native-check-box' 
 
-import {startMenuInitValues, startMenuKeys} from '../const'
+import {startMenuKeys} from '../const'
 
 const selectorOption = {
   mediaType: 'video',
@@ -21,15 +21,13 @@ const selectorOption = {
   noData: true,
 }
 
-const StartMenu = ({setWorkState}) => {
-  const [state, changeState] = useState(startMenuInitValues)
-  
+const StartMenu = ({referChildState, callWebsocketDaemon, codingVideo, programmerVideo, isTurned, movieId, addr}) => {
   function sendProps() {
-    setWorkState(state)
+    callWebsocketDaemon()
   }
   function updateState(key, value) {
     if (startMenuKeys.indexOf(key) < 0) return -1
-    changeState(Object.assign({}, state, {[key]: value}))
+    referChildState({[key]: value})
   }
   function selectVideo(key) {
     if (['codingVideo', 'programmerVideo'].indexOf(key) < 0) return -1
@@ -54,8 +52,8 @@ const StartMenu = ({setWorkState}) => {
         <View style={styles.row}>
           <TextInput
             style={styles.input}
-            onChangeText={addr => updateState('addr', addr)}
-            value={state.addr}
+            onChangeText={v => {updateState('addr', `${v}`)}}
+            value={addr}
             keyboardType={'url'}
           />
           <Text
@@ -67,11 +65,11 @@ const StartMenu = ({setWorkState}) => {
         <Text style={styles.text}>Movie ID: (0 - 9)</Text>
         <View style={styles.row}>
           <Picker
-            selectedValue={state.movieId}
+            selectedValue={movieId}
             style={styles.picker}
-            onValueChange={(itemValue) => {updateState('movieId', itemValue)}}
+            onValueChange={v => {updateState('movieId', `${v}`)}}
           >{
-              [...(Array(10))].map((v, i) => (<Picker.Item key={`mov-${i}`} label={i.toString()} value={i.toString()} />))
+              [...(Array(10))].map((v, i) => (<Picker.Item key={`mov-${i}`} label={`${i}`} value={`${i}`} />))
           }</Picker>
         </View>
 
@@ -79,8 +77,7 @@ const StartMenu = ({setWorkState}) => {
         <View style={styles.row}>
           <TextInput
             style={styles.uncontrolledInput}
-            value={state.programmerVideo}
-            keyboardType={'url'}
+            value={programmerVideo}
             editable={false}
           />
           <Text
@@ -93,8 +90,7 @@ const StartMenu = ({setWorkState}) => {
         <View style={styles.row}>
           <TextInput
             style={styles.uncontrolledInput}
-            value={state.codingVideo}
-            keyboardType={'url'}
+            value={codingVideo}
             editable={false}
           />
           <Text
@@ -106,8 +102,8 @@ const StartMenu = ({setWorkState}) => {
         <View style={styles.row}>
           <CheckBox 
             style={styles.checkbox}
-            isChecked={state.isTurned}
-            onClick={() => {updateState('isTurned', !state.isTurned)}}
+            isChecked={isTurned}
+            onClick={() => {updateState('isTurned', !!!isTurned)}}
             disabled={false}
             leftText={'180 deg Turn Display?'}
             />
@@ -150,7 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     marginLeft: 10,
-    color: REV_COLOR,
   },
   row: {
     flexDirection: 'row',
@@ -266,13 +261,3 @@ const styles = StyleSheet.create({
     margin: 60,
   },
 })
-
-// not use
-function judge (target, category) {
-  if(typeof target === 'string' && category === 'addr')
-    return target.match(/^ws:\/\//) !== null
-  else if(typeof target === 'number' && category === 'movieId')
-    return target <= 0 && 9 <= target ? true : false
-  else
-    return false
-}
