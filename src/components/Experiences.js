@@ -4,7 +4,7 @@ import {
   StyleSheet,
 } from 'react-native'
 
-import experiences from '../resources/experiences'
+import experiences from '../../resources/experiences'
 
 export const Experiences = ({rule,}) => 
   <ScrollView style={styles.expContainer}>

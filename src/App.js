@@ -17,6 +17,7 @@ import Experiences from './components/Experiences'
 
 import {globalInitialState} from './const'
 import routeSignal from './utils/routeSignal'
+import experiences from '../resources/experiences'
 
 // tryReconnectフラグ作った方がいいかもしれん
 
@@ -39,11 +40,15 @@ export default class App extends Component {
       movieId,
       codingVideo,
       programmerVideo,
+      isTurned,
     })
     this.callWebsocketDaemon()
   }
 
   callWebsocketDaemon() {
+
+    Alert.alert('TEST', `addr: ${this.state.addr}, \ncodingVideo: ${this.state.codingVideo}, \nprogrammerVideo: ${this.state.programmerVideo}, \nmovieId${this.state.movieId}, \nisTurned: ${this.state.isTurned}`)
+
     if (!this.state.addr.match(/^ws:\/\//)) {
       Alert.alert('NOTICE', 'サーバアドレスは"ws://~~:~~"の形式')
       return
@@ -103,6 +108,7 @@ export default class App extends Component {
     const currentTime = this.state.currentTime
     const startTime = this.state.startTime
     const isPaused = this.state.isPaused
+    const isTurned = this.state.isTurned
     const movieId = this.state.movieId
     const rule = this.state.rule
     const markerTime = this.state.markerTime
@@ -110,8 +116,8 @@ export default class App extends Component {
     const codingVideo = this.state.codingVideo
 
     const startMenuProps = {}
-    const mainVideoProps = {codingVideo, programmerVideo, isPaused, currentTime, startTime, stopTime, markerTime,}
-    const experiencesProps = {rule, experiences,}
+    const mainVideoProps = {codingVideo, programmerVideo, isPaused, isTurned, currentTime, startTime, stopTime, markerTime,}
+    const experiencesProps = {rule,}
 
     return !isEstablished ? (
       <StartMenu 

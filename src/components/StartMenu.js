@@ -7,9 +7,9 @@ import {
   Alert,
   ScrollView,
   Picker,
-  Modal,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
+import CheckBox from 'react-native-check-box' 
 
 import {startMenuInitValues, startMenuKeys} from '../const'
 
@@ -45,37 +45,6 @@ const StartMenu = ({setWorkState}) => {
 
   return (
     <View style={styles.container}>
-        <Modal
-          style={styles.historyModal}
-          animationType="slide"
-          transparent={false}
-          visible={state.isShowURIHistory || state.isShowCodingVideoHistory || state.isShowProgrammerVideoHistory}
-          presentationStyle={'pageSheet'}
-        >
-          <Text style={styles.headerText}>{
-            state.isShowURIHistory ?
-              'Server URL' :
-            state.isShowCodingVideoHistory ?
-              'Coding Video History' :
-            state.isShowProgrammerVideoHistory ?
-              'Programmer Video History':
-            ``
-          }</Text>
-          <Text
-          style={styles.closeButton}
-          onPress={() => {
-            state.isShowURIHistory ?
-              updateState('isShowURIHistory', false) :
-            state.isShowCodingVideoHistory ?
-              updateState('isShowCodingVideoHistory', false) :
-            updateState('isShowProgrammerVideoHistory', false)
-          }}>Close</Text>
-          {() => {
-            const id = state.isShowURIHistory ? 'addr' : state.isShowCodingVideoHistory ? 'codingVideo' : 'programmerVideo'
-            const flag = state.isShowURIHistory ? 'isShowURIHistory' : state.isShowCodingVideoHistory ? 'isShowCodingVideoHistory' : 'isShowProgrammerVideoHistory'
-            return history[id].map(item => (<Text style={styles.selectButton} onPress={()=>{updateState(id, item.v);updateState(flag, false)}}>{item.v}</Text>))
-          }}
-        </Modal>
 
       <ScrollView style={styles.menu}>
         <Text style={styles.headerText}>Start Menu for 《/module/Whom》</Text>
@@ -133,7 +102,16 @@ const StartMenu = ({setWorkState}) => {
             onPress={() => {selectVideo('codingVideo')}}
           >Browse</Text>
         </View>
-
+        
+        <View style={styles.row}>
+          <CheckBox 
+            style={styles.checkbox}
+            isChecked={state.isTurned}
+            onClick={() => {updateState('isTurned', !state.isTurned)}}
+            disabled={false}
+            leftText={'180 deg Turn Display?'}
+            />
+        </View>
 
         <Text
           style={styles.okButton}
@@ -167,6 +145,12 @@ const styles = StyleSheet.create({
   },
   menu: {
     flexDirection: 'column',
+  },
+  checkbox: {
+    flex: 1,
+    marginRight: 10,
+    marginLeft: 10,
+    color: REV_COLOR,
   },
   row: {
     flexDirection: 'row',

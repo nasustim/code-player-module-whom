@@ -5,6 +5,7 @@ export const startMenuInitValues = {
   'movieId': '',
   'codingVideo': '',
   'programmerVideo': '',
+  'isTurned': false,
 }
 
 export const startMenuKeys = Object.keys(startMenuInitValues)
