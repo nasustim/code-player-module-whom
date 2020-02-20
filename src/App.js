@@ -19,6 +19,8 @@ import {globalInitialState} from './const'
 import routeSignal from './utils/routeSignal'
 import experiences from '../resources/experiences'
 
+const isTest = true
+
 // tryReconnectフラグ作った方がいいかもしれん
 
 export default class App extends Component {
@@ -58,6 +60,25 @@ export default class App extends Component {
       Alert.alert('NOTICE', '映像ファイルを選択してください。')
       return
     }
+    
+    // test
+    if(isTest) {
+      setInterval(() => {
+        this.setState({
+          isPaused: !this.state.isPaused,
+        })
+      }, 5000)
+      if(this.state.currentTime > 60){
+        this.player.seek(0)
+        this.setState({
+          currentTime: 0,
+          startTime: 0,
+          markerTime: 9900,
+          stopTime,
+        })
+      }
+      return
+    }
 
     this.ws = new WebSocket(this.state.addr)
 
@@ -78,7 +99,7 @@ export default class App extends Component {
       const data = JSON.parse(event.data)
       console.log(data)
       
-      routeSignal({state: this.state, setState: this.setState, player: this.player, data})
+      routeSignal({state: this.state, setState: this.referChildState, player: this.player, data})
     }
     this.ws.onerror = err => {
       this.ws = null
@@ -117,7 +138,7 @@ export default class App extends Component {
     const mainVideoProps = {codingVideo, programmerVideo, isPaused, isTurned, currentTime, startTime, stopTime, markerTime,}
     const experiencesProps = {rule,}
 
-    return !isEstablished ? (
+    return !isEstablished && isTest ? (
       <StartMenu 
         referChildState={this.referChildState}
         callWebsocketDaemon={this.callWebsocketDaemon}

@@ -26,7 +26,7 @@ function routeSignal ({setState, state, player, data}) {
       }
       break
     case toCliSignal.SEEK_INIT:
-      if(state.movieId === '9'){
+      if(state.movieId !== '9'){
         setState({
           isPaused: true,
           currentTime: 0,
