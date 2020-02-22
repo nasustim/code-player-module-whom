@@ -18,6 +18,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import CheckBox from 'react-native-check-box'
 
 import Video from 'react-native-video';
 import ImagePicker from 'react-native-image-picker';
@@ -58,7 +59,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      addr: 'ws://192.168.8.10:3003', // initilal value for exhibit network
+      addr: 'ws://192.168.8.5:3003', // initilal value for exhibit network
       isConnectionStarted: false,
       isConnectionEstablished: setting.env !== 'production',
       movieId: setting.env === 'production' ? '' : '0',
@@ -73,6 +74,7 @@ export default class App extends Component {
       isSteppable: true,
       programmerVideo: '',
       codingVideo: '',
+      isTurned: false,
     };
     this.ws = null;
     this.callWebsocketDaemon = this.callWebsocketDaemon.bind(this);
@@ -153,9 +155,10 @@ export default class App extends Component {
       this.ws = null;
     };
     this.ws.onclose = event => {
-      console.log(
-        `connection closed, code: ${event.code}, reason: ${event.reason}`,
-      );
+      this.ws = null
+      setTimeout(()=> {
+        this.callWebsocketDaemon()
+      }, 5000)
     };
   }
 
@@ -193,9 +196,13 @@ export default class App extends Component {
     const markerTime = this.state.markerTime;
     const programmerVideo = this.state.programmerVideo;
     const codingVideo = this.state.codingVideo;
+    const isTurned = this.state.isTurned
+
+    const cont = isTurned ? styles.rtContainer : styles.container
+    const expCont = isTurned ? styles.rtExpContainer : styles.expContainer
 
     return !isEstablished ? (
-      <View style={styles.container}>
+      <View style={cont}>
         <View style={styles.menu}>
           <Text style={styles.controlChild}>
             サーバアドレスを入力(ws://**(:**)(/**))
@@ -204,6 +211,16 @@ export default class App extends Component {
             style={styles.controlChild}
             onChangeText={addr => this.setState({addr})}
             value={this.state.addr}
+          />
+          <CheckBox
+            style={{padding: 10}}
+            onClick={()=>{
+              this.setState({
+                isTurned:!this.state.isTurned
+              })
+            }}
+            isChecked={this.state.isTurned}
+            leftText={"CheckBox"}
           />
           <Text style={styles.controlChild}>動画IDを入力(0 - 8)</Text>
           <TextInput
@@ -235,7 +252,7 @@ export default class App extends Component {
         </View>
       </View>
     ) : movieId !== '9' ? (
-      <View style={styles.container}>
+      <View style={cont}>
         <View style={styles.videoContainer}>
           <Video
             fullscreen={true}
@@ -250,6 +267,15 @@ export default class App extends Component {
             }}
             onBuffer={this.onBuffer}
             paused={isPaused}
+            onEnd={() => {
+              this.sendMessage({
+                signal: 1,
+                movieId: movieId,
+              });
+              this.setState({
+                isPaused: true,
+              });
+            }}
             onProgress={movie => {
               if (Math.floor(movie.currentTime) !== currentTime) {
                 this.setState({
@@ -284,7 +310,7 @@ export default class App extends Component {
         {isPaused === true ? <View style={styles.mask} /> : null}
       </View>
     ) : (
-      <ScrollView style={styles.expContainer}>
+      <ScrollView style={expCont}>
         <Fragment>
           <Text style={styles.experiences}>
             let 経験 ={' '}
@@ -331,6 +357,14 @@ const styles = StyleSheet.create({
     //alignItems: 'center',
     backgroundColor: '#AAAAAA',
   },
+  rtContainer: {
+    flex: 1,
+    //flexDirection: 'row',
+    //justifyContent: 'space-between',
+    //alignItems: 'center',
+    backgroundColor: '#AAAAAA',
+    transform: [{ rotate: '180deg' }]
+  },
   mask: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -347,6 +381,11 @@ const styles = StyleSheet.create({
   expContainer: {
     padding: 20,
     backgroundColor: '#F5FCFF',
+  },
+  rtExpContainer: {
+    padding: 20,
+    backgroundColor: '#F5FCFF',
+    transform: [{ rotate: '180deg' }]
   },
   row: {
     flexDirection: 'row',
